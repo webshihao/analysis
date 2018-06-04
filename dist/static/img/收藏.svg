@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>收藏</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="3" width="24" height="24"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-1165.000000, -338.000000)">
+            <g id="Group-11" transform="translate(113.000000, 252.000000)">
+                <g id="Group-9-Copy" transform="translate(0.000000, 65.000000)">
+                    <g id="Group-6" transform="translate(1052.000000, 18.000000)">
+                        <g id="Rectangle-7" opacity="0">
+                            <use fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            <rect stroke="#979797" stroke-width="1" x="0.5" y="3.5" width="23" height="23"></rect>
+                        </g>
+                        <path d="M14,19 L4,19 L4,9 C4,6.23857625 6.23857625,4 9,4 C11.7614237,4 14,6.23857625 14,9 C16.7614237,9 19,11.2385763 19,14 C19,16.7614237 16.7614237,19 14,19 Z" id="Combined-Shape" fill="#666666" transform="translate(11.500000, 11.500000) rotate(-45.000000) translate(-11.500000, -11.500000) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
