@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-06 16:51:35
+* @Last Modified: 2018-06-06 18:29:30
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -55,6 +55,14 @@
     		      label="报告名称"
     		      align="left"
     		      prop="repName">
+                  <template slot-scope="scope">
+                    <a
+                      target="_blank"
+                      :href="'/newsDetail/report.html?id=' + scope.row.id "
+                      >
+                      {{scope.row.repName}}
+                    </a>
+                  </template>
     		    </el-table-column>
     		    <el-table-column
     		      label="时间"
