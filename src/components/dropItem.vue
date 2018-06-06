@@ -88,7 +88,7 @@
                     </template>
                 </div>
                 <li class="drop-group-name drop-item-all noData" v-if="dataFromFather == null && dropdownItemGroupData == null">暂无数据</li> 
-                <li class="drop-group-name drop-item-all noData nodataclass" v-if="dataFromFather.length==0 && dropdownItemGroupData.length==0">对不起，该车系不在您的权限范围内</li>    
+                <li class="drop-group-name drop-item-all noData nodataclass" v-if="dataFromFather.length==0 && dropdownItemGroupData.length==0">暂无数据</li>    
             </div>
         </div> 
     </div>

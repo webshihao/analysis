@@ -2,8 +2,8 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-01 15:27:00
-* @Modified by:   yiche
+* @Last Modified: 2018-06-06 16:51:35
+* @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
 * ---------------------------------------
@@ -32,6 +32,7 @@
     					:search_arr="searchGroup"
                         :show_dialog="show_dialog"
     					:prop_search_val="search_val"
+                        @clearCommand="handleClear"
     					@changeSearch="handleChangeSearch"
     					@changeCommandRoot="handleChangeCommandRoot"
     				>
@@ -53,13 +54,13 @@
     		    <el-table-column
     		      label="报告名称"
     		      align="left"
-    		      prop="name">
+    		      prop="repName">
     		    </el-table-column>
     		    <el-table-column
     		      label="时间"
     		      align="center"
     		      width="150"
-    		      prop="time">
+    		      prop="createtime">
     		    </el-table-column>
     		    <el-table-column
     		      label="操作"
@@ -246,6 +247,20 @@
                     this.searchGroup = result.data;
                 })
             },
+            handleClear(item){
+                const params = {
+                    content: 'clear'
+                };
+                ajaxPost('/yuqing/get_search_list',params).then((res)=>{
+                    const {ret_code,msg,result} = res.data;
+                    if(ret_code == 0){
+                        this.searchGroup = [];
+                    }else{
+                        this.$message.error(msg);
+                    }
+                    
+                });
+            },
             handleDel(index,value){
                 console.log(index,value);
                 this.dialogVisible = true;
@@ -264,10 +279,10 @@
                 console.log('this.curDelId=>', this.curDelId);
                 this.reportListData.splice(this.curDelId,1); 
                 const params = {
-                    id: this.curDelId
+                    rpt_id: this.curDelId
                 };
                 ajaxGet('/report/del_rpt',params).then((res)=>{
-                    const {ret_code,msg,result} = res;
+                    const {ret_code,msg,result} = res.data;
                     if(ret_code == 0){
                         this.queryParams = this.getQueryParams();
                         this.getDataTable(this.queryParams);

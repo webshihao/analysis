@@ -2,8 +2,8 @@
 * @Created Date:   2018-05-17 17:41:39
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-04 09:23:24
-* @Modified by:   yiche
+* @Last Modified: 2018-06-06 14:42:41
+* @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
 * ---------------------------------------
@@ -28,7 +28,7 @@
 			    </div>
 			    <div class="checkCode input_box">
 			        <img src="../../../static/img/code.svg"/>
-			            <input type="text" v-model="codeNum" placeholder="验证码" @keyup.enter="click_submit"/>
+			            <input type="text" v-model="codeNum" placeholder="验证码"/>
 			        <div class="checkImg float" @click="setImg">
 			            <img :src="imgSrc" alt="">
 			        </div>
@@ -197,6 +197,7 @@
 	import {
 		ajaxGet,
 		ajaxPost,
+		getStore,
 		setStore
 	} from '@/util/util.js'
 	export default {
@@ -217,7 +218,10 @@
 	    components: {
 	    },
 	    created() {
-	    	this.imgSrc = this.codeImg;
+	    	if(getStore('password')){
+	    		this.password = getStore('password');
+	    	}
+	    	this.setImg();
 	    },
 	    methods: {
 	    	page_jump(str){
@@ -229,12 +233,16 @@
 	    		this.imgSrc = '/login/get_vcode?' + data;
 	    	},
 	    	// 提交
-	    	click_submit(){
+	    	click_submit(event){
 	    		const params = {
 	    			user: this.username,
 	    			pass: this.password,
 	    			code: this.codeNum
 	    		};
+	    		if(this.codeNum == ''){
+	    			this.returnInfo = '请输入验证码';
+	    			return false;
+	    		}
 	    		ajaxPost('/login/user_login',params).then((res)=>{
 	    			let {ret_code,msg,result} = res.data;
 	    			if(ret_code == 0){
@@ -242,6 +250,7 @@
 	    				this.page_jump('/home');
 	    			}else{
 	    				this.returnInfo = msg;
+	    				this.setImg();
 	    			}
 	    		}).catch((err)=>{
 	    			console.log(err);
@@ -250,6 +259,7 @@
 	    	// 记住密码
 	    	change_save(){
 	    		this.is_save_userinfo = !this.is_save_userinfo;
+	    		setStore('password',this.password);
 	    	}
 	    }
 	}

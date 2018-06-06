@@ -36,10 +36,10 @@ apiRouter.post('/login/user_login', function(req, res) {
 apiRouter.get('/yuqing/get_cmp_lst', function(req, res) {
     res.json(CompetitiveData)
 });
-apiRouter.get('/yuqing/get_col_lst', function(req, res) {
+apiRouter.get('/yuqing/get_col_list', function(req, res) {
     res.json(CollectionData)
 });
-apiRouter.get('/yuqing/get_media_lst', function(req, res) {
+apiRouter.get('/yuqing/get_media_list', function(req, res) {
     res.json(MediaData)
 });
 apiRouter.post('/yuqing/get_search_list', function(req, res) {

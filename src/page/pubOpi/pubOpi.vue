@@ -2,8 +2,8 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-01 17:16:24
-* @Modified by:   yiche
+* @Last Modified: 2018-06-06 14:51:39
+* @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
 * ---------------------------------------
@@ -74,7 +74,7 @@
     		    <el-table-column type="expand" align="left">
     		      <template slot-scope="props">
     		        <el-form label-position="left" inline class="demo-table-expand">
-    		          <el-form-item label="商品名称" align="left">
+    		          <el-form-item label="" align="left">
     		            <span>{{ props.row.abst }}</span>
     		          </el-form-item>
     		        </el-form>
@@ -103,7 +103,7 @@
     		      label="媒体类型"
     		      align="left"
     		      width="150"
-    		      prop="media_name">
+    		      prop="media_type">
     		    </el-table-column>
     		    <el-table-column
     		      label="时间"
@@ -344,7 +344,7 @@
 	    },
         watch: {
             'reportList'(newVal){
-                if(newVal.length == 5){
+                if(newVal.length >= 5){
                     this.isShowNewTag = false;
                 }else{
                     this.isShowNewTag = true;
@@ -362,33 +362,48 @@
 	    methods: {
 	    	// 获取当前日期
 	    	getCurDate(){
-	    		return new Date().getFullYear().toString() + (new Date().getMonth() + 1).toString().padStart(2,"0") + new Date().getDate().toString();
+	    		return new Date().getFullYear().toString() + (new Date().getMonth() + 1).toString().padStart(2,"0") + new Date().getDate().toString().padStart(2,"0");
 	    	},
 	    	// 获取竞品列表
 	    	getCompetitiveList(){
 	    		return ajaxGet('/yuqing/get_cmp_lst').then((res)=>{
-	    			const {ret_code,msg,result} = res.data;
-	    			this.competitiveGroup = result.data;
-	    			this.competitiveObj = this.competitiveGroup[0];
-                    return this.competitiveObj
+                    const {ret_code,msg,result} = res.data;
+                    if(ret_code == 0){
+                        this.competitiveGroup = result.data;
+                        this.competitiveObj = this.competitiveGroup[0];
+                        return this.competitiveObj;    
+                    }else{
+                        this.$message.error(msg);
+                    }
+	    			
 	    		})
 	    	},
 	    	// 获取收藏列表
 	    	getCollectionList(){
-	    		return ajaxGet('/yuqing/get_col_lst').then((res)=>{
-	    			const {ret_code,msg,result} = res.data;
-	    			this.collectionGroup = result.data;
-	    			this.collectionObj = this.collectionGroup[0];
-                    return this.collectionObj;
+	    		return ajaxGet('/yuqing/get_col_list').then((res)=>{
+                    const {ret_code,msg,result} = res.data;
+                    if(ret_code == 0){
+                        const {ret_code,msg,result} = res.data;
+                        this.collectionGroup = result.data;
+                        this.collectionObj = this.collectionGroup[0];
+                        return this.collectionObj;
+                    }else{
+                        this.$message.error(msg);
+                    }
+	    			
 	    		})
 	    	},
 	    	// 获取媒体类型列表
 	    	getMediaList(){
-	    		return ajaxGet('/yuqing/get_media_lst').then((res)=>{
+	    		return ajaxGet('/yuqing/get_media_list').then((res)=>{
 	    			const {ret_code,msg,result} = res.data;
-	    			this.mediaGroup = result.data;
-	    			this.mediaObj = this.mediaGroup[0];
-                    return this.mediaObj;
+                    if(ret_code == 0){
+                        this.mediaGroup = result.data;
+                        this.mediaObj = this.mediaGroup[0];
+                        return this.mediaObj;
+                    }else{
+                        this.$message.error(msg);
+                    }
 	    		})
 	    	},
 	    	clickCollection(item){
@@ -415,7 +430,12 @@
                 };
                 ajaxPost('/yuqing/get_search_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
-                    this.searchGroup = result.data;
+                    if(ret_code == 0){
+                        this.searchGroup = result.data;
+                    }else{
+                        this.$message.error(msg);
+                    }
+                    
                 })
             },
             handleChangeCommandRoot(item,index,isShow){
@@ -442,38 +462,47 @@
 	    		// };
 	    		ajaxPost(url,params).then((res)=>{
 	    			const {ret_code,msg,result} = res.data;
-	    			this.tableData = result.data;
-	    			this.msg_count = result.totle_num;
-                    this.page_num = result.page_num;
-                    this.totle_num = result.totle_num;
+                    if(ret_code == 0){
+                        this.tableData = result.data;
+                        this.msg_count = result.totle_num;
+                        this.page_num = result.page_num;
+                        this.totle_num = result.totle_num;
+                    }else{
+                        this.$message.error(msg);
+                    }
+	    			
 	    		});
 	    	},
             handleCollect(index,value){
-                this.opiId = value.Opi_id;
+                this.opiId = value.opi_id;
                 console.log(value)
                 const url = '/yuqing/do_collect';
                 const typeNum = value.opr_id == 0 ? 1 : 2;
                 const params = {
-                    opi_id: value.Opi_id,
+                    opi_id: value.opi_id,
                     type: typeNum   //1 添加 2 取消 
                 };
                 ajaxGet(url,params).then((res)=>{
                     const {ret_code,msg} = res.data;
                     if(ret_code == 0){
                         value.opr_id = Number(!value.opr_id);
+                    }else{
+                        this.$message.error(msg);
                     }
                 });
             },
             handleReport(index,value){
-                this.opiId = value.Opi_id;
+                this.opiId = value.opi_id;
                 this.dialogVisible = true;
                 const params = {
-                    id: value.Opi_id 
+                    id: value.opi_id 
                 };
                 ajaxGet('/yuqing/get_rpt_name_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
                     if(ret_code == 0){
                         this.reportList = result.data;
+                    }else{
+                        this.$message.error(msg);
                     }
                 })
                 console.log(index,value)
@@ -490,6 +519,8 @@
                     const { ret_code,msg } = res.data;
                     if(ret_code == 0){
                         report.isChecked = true;
+                    }else{
+                        this.$message.error(msg);
                     }
                 });
             },
@@ -505,16 +536,25 @@
                     rpt_name: inputValue,
                     opi_id: this.opiId
                 };
-                if(inputValue){
+                // 查看是否有已存在的报告
+                const isRepeat = this.reportList.some(value => value.name == inputValue); 
+                if(isRepeat){
+                    this.$message.error('请勿输入重复报告名称');
+                    return false;
+                }
+                if(inputValue && !isRepeat){
                     ajaxGet('/yuqing/add_single_rpt',params).then((res)=>{
                         const { ret_code,msg,result } = res.data;
                         if(ret_code == 0){
                             this.reportList = result.data;
+                        }else{
+                            this.$message.error(msg);
                         }
                     });
-                    this.inputVisible = false;
+                    
                     this.inputValue = '';
                 }
+                this.inputVisible = false;
             },
             handleTableHover(row, column, cell, event){
                 // cell.style.color = '#328BFF'
@@ -553,7 +593,12 @@
                 };
                 ajaxPost('/yuqing/get_search_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
-                    this.searchGroup = [];
+                    if(ret_code == 0){
+                        this.searchGroup = [];
+                    }else{
+                        this.$message.error(msg);
+                    }
+                    
                 });
             }
 	    },

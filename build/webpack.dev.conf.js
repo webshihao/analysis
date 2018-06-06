@@ -47,9 +47,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    before(app){
-      app.use(apiRouter)
-    }
+    // before(app){
+    //   app.use(apiRouter)
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({

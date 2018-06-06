@@ -2,8 +2,8 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-01 16:31:34
-* @Modified by:   yiche
+* @Last Modified: 2018-06-06 17:19:16
+* @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
 * ---------------------------------------
@@ -15,7 +15,7 @@
             <input v-model="reportTitle" placeholder="请输入内容"/>
             <h2 class="time_h2">{{time}}</h2>
             <div class="cont_wrap" v-for="(article,index) in articleList">
-                <input class="cont_num" type="text" v-model="article.order" @blur="sortList"><input class="title_input" v-model="article.title" /><img class="delImg" :src="delImg" @click="delArticle(article,index)" alt=""><textarea name="" id="" cols="30" rows="10" v-model="article.cont"></textarea><img :src="article.bg_img" class="bg_img" alt="">
+                <input class="cont_num" type="text" v-model="article.rptOrder" @blur="sortList"><input class="title_input" v-model="article.title" disabled="true" /><img class="delImg" :src="delImg" @click="delArticle(article,index)" alt=""><textarea :class="{allWidth: !article.bgImg}" name="" id="" cols="30" rows="10" v-model="article.cont"></textarea><img v-if="article.bgImg" :src="article.bgImg" class="bg_img" alt="">
             </div>
             
         </div>
@@ -48,6 +48,7 @@
             box-sizing: border-box;
         }
         .time_h2 {
+            font-size: 14px;
             margin: 20px 0;
         }
         .cont_wrap {
@@ -83,15 +84,18 @@
                 vertical-align: middle;
             }
             textarea {
-                width: 82%;
+                width: 74%;
                 padding: 5px;
-                height: 180px;
+                height: 140px;
                 border: 1px solid #CFD0D1;
                 box-sizing: border-box;
+                &.allWidth {
+                    width: 100%;
+                }
             }
             .bg_img {
-                width: 18%;
-                height: 180px;
+                width: 26%;
+                height: 140px;
             }
         }
         
@@ -188,19 +192,22 @@
                             }
                         );
                         f();
-                    }, 1000*60*5);
+                    }, 1000*5*60);
                 })
                 test();
             },
 	    	getReportData(id){
                 const url = '';
                 const params = {
-                    rpt_id: id
+                    rpt_id: id,
+                    pageSize: 1,
+                    is_all: true
                 };
-                ajaxPost('/yuqing/get_rpt_dtl',params).then((res)=>{
+                ajaxPost('/report/get_rpt_dtl',params).then((res)=>{
                     const { ret_code,msg,result } = res.data;
                     this.articleList = result.data;
-                    this.time = result.time;
+                    const timeArr = result.time.split(" ")[0].split(".");
+                    this.time = timeArr[0]+ '年' + timeArr[1] + '月' + timeArr[2] + '日';
                     this.reportTitle = result.rpt_name;
                 });
             },
@@ -212,15 +219,16 @@
                 }).then(()=>{
                     this.articleList.splice(index,1);
                     this.articleList.forEach((value,index)=>{
-                        value.order = index + 1;
+                        value.rptOrder = index + 1;
                     })
                 });
                 
             },
             sortList(){
                 this.articleList.sort(function(a,b){
-                    return a.order - b.order
+                    return a.rptOrder - b.rptOrder;
                 })
+
             },
             cancel(){
                 this.$confirm('是否确认取消报告','提示',{
@@ -244,20 +252,21 @@
             },
             save(){
                 const that = this;
-                this.$alert('保存成功',{
-                    confirmButtonText: '确定',
-                    callback: action => {
-                        this.saveAjax(function(ret_code){
-                            if(ret_code == 0){
-                                clearTimeout(_timer);
-                                that.saveLoop();
-                                that.$router.push({path: '/home/rptLst'})
-                            }else{
-                                that.$message.error('保存失败');
-                            }
-                        }); 
+                
+                this.saveAjax(function(ret_code){
+                    if(ret_code == 0){
+                        clearTimeout(_timer);
+                        that.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                        // that.saveLoop();
+                        that.$router.push({path: '/home/rptLst'})
+                    }else{
+                        that.$message.error('保存失败');
                     }
-                });
+                }); 
+                
             }
 	    },
         mounted(){

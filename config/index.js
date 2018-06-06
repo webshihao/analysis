@@ -12,7 +12,15 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/yuqing': {
-            target: 'http://192.144.143.188',
+            target: 'http://yuqing.zhidaohulian.com/',
+            changeOrigin: true
+        },
+        '/login': {
+            target: 'http://yuqing.zhidaohulian.com/',
+            changeOrigin: true
+        },
+        '/report': {
+            target: 'http://yuqing.zhidaohulian.com/',
             changeOrigin: true
         }
     },
