@@ -124,7 +124,7 @@
     		      prop="desc">
                     <template slot-scope="scope">
                         <el-row>
-                            <img @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 0 ? heartOff : heartOn " alt="">
+                            <img @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 0 ? heartOn : heartOff " alt="">
                             <img @click="handleReport(scope.$index,scope.row)" :src="addReport" alt="">
                         </el-row>
                         
@@ -312,7 +312,7 @@
                 isShowNewTag: true,
                 keyword: '',
                 search_val: '',
-                page_num: 0,
+                page_num: 1,
                 totle_num: 0,
                 queryParams: {
                     // "data_start": "20180501",
@@ -473,24 +473,24 @@
 	    			
 	    		});
 	    	},
-            handleCollect(index,value){
-                this.opiId = value.opi_id;
-                console.log(value)
-                const url = '/yuqing/do_collect';
-                const typeNum = value.opr_id == 0 ? 1 : 2;
-                const params = {
-                    opi_id: value.opi_id,
-                    type: typeNum   //1 添加 2 取消 
-                };
-                ajaxGet(url,params).then((res)=>{
-                    const {ret_code,msg} = res.data;
-                    if(ret_code == 0){
-                        value.opr_id = Number(!value.opr_id);
-                    }else{
-                        this.$message.error(msg);
-                    }
-                });
-            },
+            // handleCollect(index,value){
+            //     this.opiId = value.opi_id;
+            //     console.log('收藏=>',value)
+            //     const url = '/yuqing/do_collect';
+            //     const typeNum = value.opr_id == 0 ? 1 : 2;
+            //     const params = {
+            //         opi_id: value.opi_id,
+            //         type: typeNum   //1 添加 2 取消 
+            //     };
+            //     ajaxGet(url,params).then((res)=>{
+            //         const {ret_code,msg} = res.data;
+            //         if(ret_code == 0){
+            //             value.opr_id = Number(!value.opr_id);
+            //         }else{
+            //             this.$message.error(msg);
+            //         }
+            //     });
+            // },
             handleReport(index,value){
                 this.opiId = value.opi_id;
                 this.dialogVisible = true;
@@ -570,6 +570,7 @@
                 this.queryParams.media_id = this.mediaObj.id;
                 this.queryParams.opr_id = this.collectionObj.id;
                 this.queryParams.keywd = this.keyword;
+                console.log('this.collectionObj.id=>',this.collectionObj.id);
                 return this.queryParams;
             },
             handleCurPage(val){

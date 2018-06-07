@@ -132,7 +132,7 @@
 	export default {
 	    data() {
 	        return {
-    	        dateArr: [],
+    	        dateArr: "",
     	        pickerOptions: {
                   shortcuts: [{
                     text: '今天',
@@ -187,10 +187,11 @@
 	    },
 	    created() {
 	    	// 默认日期为今天
-	    	this.dateArr = ['',''];
+	    	// this.dateArr = ['',''];
             // this.dateArr = [this.getCurDate(),this.getCurDate()];
             this.queryParams = this.getQueryParams();
             this.getDataTable(this.queryParams);
+            // console.log(this.getCurDate());
 	    },
         watch: {
             'dateArr'(newVal,oldVal){
@@ -222,7 +223,7 @@
                 // }
                 ajaxPost('/report/get_rpt_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
-                    console.log(res.data);
+                    console.log(res.data,result);
                     this.reportListData = result.data;
                     this.total_num = result.data_num;
                     this.page_num = result.page_num;
@@ -328,6 +329,7 @@
             }
 	    },
         mounted(){
+            console.log('当前=>',this.getCurDate())
             this.$nextTick((ele)=>{
                 const searchDom = document.getElementById('searchDiv');
                 document.addEventListener('click',(e)=>{

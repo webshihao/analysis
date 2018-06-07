@@ -55,7 +55,7 @@
 	export default {
 	    data() {
 	        return {
-	        	counter: getStore('nav_index') ? getStore('nav_index') : 0,
+	        	counter: getStore('nav_index') ? +getStore('nav_index') : 0,
 	        	username: '',
 	        	topNav: [
 	        		{id: 1,name: 'pubOpi',description: '实时舆情'},
