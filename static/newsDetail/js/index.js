@@ -1,10 +1,11 @@
-    var len=100,
+            var len=100,
             contentArr=[],
-            pageSize=1;
+            pageSize=0;
             total_page=0,
-            htmlStr='',
+            textStr='',
             dataRes=[],       
             statusArr=[],
+            contentArr=[];
             rptId= +window.location.search.slice(1).split("=")[1];  
             function timeFormat(date){
                 var da = date;
@@ -14,21 +15,11 @@
                 var date = da.getDate()+'日';
                 return [year,month,date].join('');
             } 
-             getDataList();
-             function getDataList(){
-            }
-             function render(){
-                $("ul#thelist p.new_detial").each(function(){
-                    var contentText=$(this).html();
-                    contentArr.push(contentText);
-                    var str=$(this).html();
-                    str = str.substring(0, len)+'...';
-                    $(this).html(str);
-                });  
-             }
-             $('ul#thelist').on('click','a.toggle',function () {
+            function showAll(){
+                $('ul#thelist').on('click','a.toggle',function () {
                 //点击按钮的时候改变开关的值
                 var liIndex=$(this).parents('li').index();
+                console.log(liIndex);
                  if(!statusArr[liIndex]){
                     //展开
                     $(this).parents('li').find('p.new_detial').html(contentArr[liIndex]);
@@ -38,14 +29,13 @@
                  }else {
                      //收缩
                     console.log('收缩=>');
-                    var str=$(this).parents('li').find('p.new_detial').html();
-                    str = str.substring(0, len)+'...';
+                    var str = contentArr[liIndex].substring(0, len)+'...';
                     $(this).parents('li').find('p.new_detial').html(str);
                     $(this).html('<i class="iconfont icon_arrow">&#xe603;</i>');
                     statusArr[liIndex]=false;
                  }
              })
-
+            }
             // 上拉加载
             var dropload = $('#wrap').dropload({
                 scrollArea : window,
@@ -57,9 +47,7 @@
                 },
                 loadDownFn : function(me) {
                     pageSize++;
-                    // if(pageSize>total_page){
-                    //     return;
-                    // }
+                    var htmlStr="";
                     $.ajax({  
                     contentType: "application/json;charset=UTF-8",
                     type: "POST",
@@ -67,15 +55,21 @@
                     data: JSON.stringify({'rpt_id':rptId,'is_all':false,pageSize:pageSize}), 
                     dataType: 'json',
                     success: function(data){ 
-                     console.log(data);
+                        console.log(data);
                         dataRes=data.result.data;
                         total_page=data.result.total_page;
+                        var sectStr=""; 
+                        var arrLen = dataRes.length;
+                         console.log(pageSize,arrLen);
                         $('.new_heading').text(data.result.rpt_name);
                         $('.new_time').text(timeFormat(data.result.time));
-                        var textStr="";
                         if(dataRes.length>0){
-                            for( var i=0,len=dataRes.length;i<len;i++){ 
+                            for( var i=0;i<arrLen;i++){ 
                                 textStr=dataRes[i].cont.replace(/\n/g,"<br>");
+                                contentArr.push(textStr);
+                                // console.log('success=>',contentArr)
+                                sectStr = textStr.substring(0, 100)+'...';
+                                // console.log('sectStr=>',sectStr);
                                 if(dataRes[i].bgImg){
                                     htmlStr+='<li>'+  
                                     '<div class="new_content">'+
@@ -90,7 +84,7 @@
                                             '<img src='+dataRes[i].bgImg+'alt="">'+
                                         '</div>'+
                                         '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
-                                        '<p class="new_detial">'+textStr+'</p>'+
+                                        '<p class="new_detial">'+sectStr+'</p>'+
                                         '<a href="javascript:;" class="toggle"><i class="iconfont icon_arrow">&#xe603;</i></a>'+
                                     '</div>'+
                                 '</li>';
@@ -105,24 +99,22 @@
                                             '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+
                                         '</div>'+
                                         '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
-                                        '<p class="new_detial">'+textStr+'</p>'+
+                                        '<p class="new_detial">'+sectStr+'</p>'+
                                         '<a href="javascript:;" class="toggle"><i class="iconfont icon_arrow">&#xe603;</i></a>'+
                                     '</div>'+
                                 '</li>';
                                 }
-                                // $('.new_detial').html(textStr);
-                                
                             }   
                         } else{
-                            // dropload.resetload();
+                            // me.lock();
                             me.noData();
                         }
                         setTimeout(function(){
                             $(".new_list").append(htmlStr);
+                            showAll();
                             me.resetload();
-                            render();
-                        },3000);
+                        },1000);
                     }
-                })
+                  })
                 }
             });    
