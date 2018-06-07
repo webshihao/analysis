@@ -111,7 +111,7 @@
                             $(".new_list").append(htmlStr);
                             showAll();
                             me.resetload();
-                        },1000);
+                        },2000);
                     }
                   })
                 }
