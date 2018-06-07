@@ -16,12 +16,11 @@
             			<el-date-picker
             			      v-model="dateArr"
             			      type="daterange"
-            			      align="left"
             			      unlink-panels
             			      range-separator="至"
             			      start-placeholder="开始日期"
             			      end-placeholder="结束日期"
-            			      value-format="yyyyMMdd"
+                              :default-time="['', '']"
             			      :picker-options="pickerOptions">
             			</el-date-picker>
         		</el-form-item>
@@ -132,7 +131,7 @@
 	export default {
 	    data() {
 	        return {
-    	        dateArr: "",
+    	        dateArr: ["",""],
     	        pickerOptions: {
                   shortcuts: [{
                     text: '今天',
@@ -187,18 +186,26 @@
 	    },
 	    created() {
 	    	// 默认日期为今天
-	    	// this.dateArr = ['',''];
+	    	this.dateArr = ["",""];
             // this.dateArr = [this.getCurDate(),this.getCurDate()];
+            console.log(this.dateArr);
             this.queryParams = this.getQueryParams();
             this.getDataTable(this.queryParams);
             // console.log(this.getCurDate());
 	    },
         watch: {
             'dateArr'(newVal,oldVal){
-                // 首次加载时间时拿不到其他的query  所以不发table请求 
+                //首次加载时间时拿不到其他的query  所以不发table请求 
                 if(oldVal.length != 2){
                     return;
                 }
+                // console.log('this.dateArr=>', data_start,data_end);
+                // console.log(newVal);
+                if(this.dateArr[0]!=""&&this.dateArr[1]!=""){
+                    this.dateArr[0] = this.timestampToTime(newVal[0]); 
+                    this.dateArr[1] = this.timestampToTime(newVal[1]);
+                }
+                console.log(this.dateArr[0]);
                 this.queryParams = this.getQueryParams();
                 this.getDataTable(this.queryParams);
             }
@@ -211,16 +218,19 @@
                   message: str
                 });
             },
+            timestampToTime(timestamp) {
+                var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                var D = date.getDate() <10 ? '0'+date.getDate() : date.getDate();
+                return Y+M+D;
+            },
 	    	// 获取当前日期
 	    	getCurDate(){
 	    		return new Date().getFullYear().toString() + (new Date().getMonth() + 1).toString().padStart(2,"0") + new Date().getDate().toString();
 	    	},
             // 获取报告列表
             getDataTable(params){
-                // if (this.dateArr[0] && this.dateArr[1] && this.dateArr[0]>this.dateArr[1]){
-                //     this.checkMsg('提交开始日期必须小于结束日期!');
-                //     return;
-                // }
                 ajaxPost('/report/get_rpt_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
                     console.log(res.data,result);
@@ -305,13 +315,13 @@
             handleTableLeave(row, column, cell, event){
                 // cell.style.color = '#606266'
             },
-            getQueryParams(){
-                this.queryParams.data_start = this.dateArr[0]; 
-                this.queryParams.data_end = this.dateArr[1];
-                this.queryParams.page_num = this.page_num;
-                this.queryParams.keywd = this.keyword;
-                return this.queryParams;
-            },
+            // getQueryParams(){
+            //     this.queryParams.data_start = this.dateArr[0]; 
+            //     this.queryParams.data_end = this.dateArr[1];
+            //     this.queryParams.page_num = this.page_num;
+            //     this.queryParams.keywd = this.keyword;
+            //     return this.queryParams;
+            // },
             handleCurPage(val){
                 this.page_num = val;
                 this.queryParams = this.getQueryParams();
@@ -329,7 +339,6 @@
             }
 	    },
         mounted(){
-            console.log('当前=>',this.getCurDate())
             this.$nextTick((ele)=>{
                 const searchDom = document.getElementById('searchDiv');
                 document.addEventListener('click',(e)=>{

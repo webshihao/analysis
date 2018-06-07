@@ -473,24 +473,24 @@
 	    			
 	    		});
 	    	},
-            // handleCollect(index,value){
-            //     this.opiId = value.opi_id;
-            //     console.log('收藏=>',value)
-            //     const url = '/yuqing/do_collect';
-            //     const typeNum = value.opr_id == 0 ? 1 : 2;
-            //     const params = {
-            //         opi_id: value.opi_id,
-            //         type: typeNum   //1 添加 2 取消 
-            //     };
-            //     ajaxGet(url,params).then((res)=>{
-            //         const {ret_code,msg} = res.data;
-            //         if(ret_code == 0){
-            //             value.opr_id = Number(!value.opr_id);
-            //         }else{
-            //             this.$message.error(msg);
-            //         }
-            //     });
-            // },
+            handleCollect(index,value){
+                this.opiId = value.opi_id;
+                console.log('收藏=>',value)
+                const url = '/yuqing/do_collect';
+                const typeNum = value.opr_id == 0 ? 1 : 2;
+                const params = {
+                    opi_id: value.opi_id,
+                    type: typeNum   //1 添加 2 取消 
+                };
+                ajaxGet(url,params).then((res)=>{
+                    const {ret_code,msg} = res.data;
+                    if(ret_code == 0){
+                        value.opr_id = Number(!value.opr_id);
+                    }else{
+                        this.$message.error(msg);
+                    }
+                });
+            },
             handleReport(index,value){
                 this.opiId = value.opi_id;
                 this.dialogVisible = true;
