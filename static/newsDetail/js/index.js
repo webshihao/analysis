@@ -67,16 +67,14 @@
                             for( var i=0;i<arrLen;i++){ 
                                 textStr=dataRes[i].cont.replace(/\n/g,"<br>");
                                 contentArr.push(textStr);
-                                // console.log('success=>',contentArr)
                                 sectStr = textStr.substring(0, 100)+'...';
-                                // console.log('sectStr=>',sectStr);
                                 if(dataRes[i].bgImg){
                                     htmlStr+='<li>'+  
                                     '<div class="new_content">'+
                                         '<div class="new_source clearfix">'+
                                             '<div class="new_item">'+
                                                     '<img class="new_icon" src='+dataRes[i].source_img+'/>'+
-                                                    '<span class="new_name">'+dataRes[i].source_title+'</span>'+
+                                                    // '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
                                             '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+
                                         '</div>'+
@@ -94,7 +92,7 @@
                                         '<div class="new_source clearfix">'+
                                             '<div class="new_item">'+
                                                     '<img class="new_icon" src='+dataRes[i].source_img+'/>'+
-                                                    '<span class="new_name">'+dataRes[i].source_title+'</span>'+
+                                                    // '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
                                             '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+
                                         '</div>'+
