@@ -2,8 +2,8 @@
 * @Created Date:   2018-05-21 10:35:42
 * @Author: yiche
 * ------
-* @Last Modified: 2018-05-23 15:13:27
-* @Modified by:   yiche
+* @Last Modified: 2018-06-07 09:58:42
+* @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
 * ---------------------------------------
@@ -55,7 +55,7 @@
 	export default {
 	    data() {
 	        return {
-	        	counter: 0,
+	        	counter: getStore('nav_index') ? getStore('nav_index') : 0,
 	        	username: '',
 	        	topNav: [
 	        		{id: 1,name: 'pubOpi',description: '实时舆情'},
@@ -79,6 +79,7 @@
 	    	
 	    	triggerTopNav(item,index){
 	    		this.counter = index;
+	    		setStore('nav_index',index);
 	    	},
 	    	
 	    }

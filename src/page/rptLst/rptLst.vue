@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-06 18:29:30
+* @Last Modified: 2018-06-07 11:05:25
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -58,7 +58,7 @@
                   <template slot-scope="scope">
                     <a
                       target="_blank"
-                      :href="'/newsDetail/report.html?id=' + scope.row.id "
+                      :href="'/static/newsDetail/report.html?id=' + scope.row.id "
                       >
                       {{scope.row.repName}}
                     </a>
