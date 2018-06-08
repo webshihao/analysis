@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-06 17:19:16
+* @Last Modified: 2018-06-08 11:07:44
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -12,7 +12,7 @@
 <template>
     <div>
         <div class="report_div">
-            <input v-model="reportTitle" placeholder="请输入内容"/>
+            <input v-model="reportTitle" class="reportTitle" placeholder="请输入内容"/>
             <h2 class="time_h2">{{time}}</h2>
             <div class="cont_wrap" v-for="(article,index) in articleList">
                 <input class="cont_num" type="text" v-model="article.rptOrder" @blur="sortList"><input class="title_input" v-model="article.title" disabled="true" /><img class="delImg" :src="delImg" @click="delArticle(article,index)" alt=""><textarea :class="{allWidth: !article.bgImg}" name="" id="" cols="30" rows="10" v-model="article.cont"></textarea><img v-if="article.bgImg" :src="article.bgImg" class="bg_img" alt="">
@@ -46,10 +46,18 @@
             border: 1px solid #CFD0D1;
             outline: 0;
             box-sizing: border-box;
+            font-family: Microsoft Yahei;
+        }
+        .reportTitle {
+            height: 50px;
+            padding: 13px 0 13px 20px;
+            font-size: 18px;
+            font-family: Microsoft Yahei;
         }
         .time_h2 {
             font-size: 14px;
             margin: 20px 0;
+            color: #8e8e8e;
         }
         .cont_wrap {
             margin-bottom: 50px;
@@ -60,23 +68,29 @@
                 display: inline-block;
                 box-sizing: border-box;
                 background: #f9fafc;
+                border-right: 0;
+                border-bottom: 0;
+                height: 50px;
             } 
             .title_input {
                 width: 95%;
                 padding: 0 5px;
                 display: inline-block;
-                height: 40px;
-                line-height: 40px;
+                height: 50px;
+                line-height: 50px;
                 border: 1px solid #CFD0D1;
                 background: #F9FAFC;
                 box-sizing: border-box;
                 background: #f9fafc;
+                border-bottom-color: transparent;
+                font-size: 16px;
+                color: #8e8e8e;
             }
             .delImg {
                 width: 23px;
                 height: 23px;
                 position: absolute;
-                top: 11px;
+                top: 16px;
                 right: 10px;
                 cursor: pointer;
             }
@@ -85,17 +99,20 @@
             }
             textarea {
                 width: 74%;
-                padding: 5px;
-                height: 140px;
+                padding: 24px;
+                height: 180px;
                 border: 1px solid #CFD0D1;
                 box-sizing: border-box;
+                resize: none;
+                color: #8e8e8e;
+                font-family: Microsoft Yahei;
                 &.allWidth {
                     width: 100%;
                 }
             }
             .bg_img {
                 width: 26%;
-                height: 140px;
+                height: 180px;
             }
         }
         

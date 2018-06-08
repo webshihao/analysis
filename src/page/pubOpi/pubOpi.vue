@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-06 14:51:39
+* @Last Modified: 2018-06-08 11:33:10
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -124,7 +124,7 @@
     		      prop="desc">
                     <template slot-scope="scope">
                         <el-row>
-                            <img @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 0 ? heartOn : heartOff " alt="">
+                            <img @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 1 ? heartOn : heartOff " alt="">
                             <img @click="handleReport(scope.$index,scope.row)" :src="addReport" alt="">
                         </el-row>
                         
@@ -474,10 +474,12 @@
 	    		});
 	    	},
             handleCollect(index,value){
+                // 渲染table的时候 1 是 收藏 2 是 未收藏
+                // 点击此按钮  如果当前是1 那就传2  
                 this.opiId = value.opi_id;
                 console.log('收藏=>',value)
                 const url = '/yuqing/do_collect';
-                const typeNum = value.opr_id == 0 ? 1 : 2;
+                const typeNum = value.opr_id == 1 ? 2 : 1;
                 const params = {
                     opi_id: value.opi_id,
                     type: typeNum   //1 添加 2 取消 
@@ -485,7 +487,7 @@
                 ajaxGet(url,params).then((res)=>{
                     const {ret_code,msg} = res.data;
                     if(ret_code == 0){
-                        value.opr_id = Number(!value.opr_id);
+                        value.opr_id = typeNum;
                     }else{
                         this.$message.error(msg);
                     }

@@ -79,7 +79,7 @@
                                             '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+
                                         '</div>'+
                                         '<div class="new_img">'+
-                                            '<img src='+dataRes[i].bgImg+'alt="">'+
+                                            '<img src='+dataRes[i].bgImg+'>'+
                                         '</div>'+
                                         '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
                                         '<p class="new_detial">'+sectStr+'</p>'+
