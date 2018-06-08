@@ -22,6 +22,7 @@
     			      start-placeholder="开始日期"
     			      end-placeholder="结束日期"
     			      value-format="yyyyMMdd"
+                      :clearable="false"
     			      :picker-options="pickerOptions">
     			</el-date-picker>
     		</el-form-item>
@@ -337,7 +338,7 @@
 	    	// 默认日期为今天
 	    	this.dateArr = [this.getCurDate(),this.getCurDate()];
 	    	Promise.all([p1,p2,p3]).then((res)=>{
-                console.log(res,1);
+                // console.log(res,1);
                 this.queryParams = this.getQueryParams();
 	    		this.getDataTable(this.queryParams);
 	    	})
@@ -440,7 +441,7 @@
             },
             handleChangeCommandRoot(item,index,isShow){
                 // debugger
-                console.log(item,index,123123);
+                // console.log(item,index,123123);
                 this.keyword = item.name;
                 this.show_dialog = isShow;
                 this.search_val = item.name;
@@ -477,7 +478,7 @@
                 // 渲染table的时候 1 是 收藏 2 是 未收藏
                 // 点击此按钮  如果当前是1 那就传2  
                 this.opiId = value.opi_id;
-                console.log('收藏=>',value)
+                // console.log('收藏=>',value)
                 const url = '/yuqing/do_collect';
                 const typeNum = value.opr_id == 1 ? 2 : 1;
                 const params = {
@@ -507,7 +508,7 @@
                         this.$message.error(msg);
                     }
                 })
-                console.log(index,value)
+                // console.log(index,value)
             },
             handleChangeReport(report){
                 if(report.isChecked){
@@ -572,7 +573,7 @@
                 this.queryParams.media_id = this.mediaObj.id;
                 this.queryParams.opr_id = this.collectionObj.id;
                 this.queryParams.keywd = this.keyword;
-                console.log('this.collectionObj.id=>',this.collectionObj.id);
+                // console.log('this.collectionObj.id=>',this.collectionObj.id);
                 return this.queryParams;
             },
             handleCurPage(val){

@@ -75,12 +75,12 @@
     		      width="150"
     		      prop="desc">
                     <template slot-scope="scope">
-                       <!--  <el-row>
-                            <img @click="handleDel(scope.$index,scope.row)" :src="del" alt="">
-                            <img @click="handleEdit(scope.$index,scope.row)" :src="edit" alt="">
-                        </el-row> -->
-                        <el-button type="text" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
-                        <el-button type="text" size="small" :disabled="scope.row.isTimeout" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
+                        <el-row>
+                             <img @click="handleEdit(scope.$index,scope.row)" :src="scope.row.isTimeout === false ? editable : edit"  alt="">
+                            <img @click="handleDel(scope.$index,scope.row)" :src="del" class="edit_btn" alt="">
+                        </el-row>
+                        <!-- <el-button type="text" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
+                        <el-button type="text" size="small" :disabled="scope.row.isTimeout" @click="handleEdit(scope.$index,scope.row)">编辑</el-button> -->
                     </template>
     		    </el-table-column>
     		  </el-table>
@@ -126,8 +126,9 @@
 	} from '@/util/util.js'
 	import DropdownItem from '@/components/dropItem.vue'
 	import SearchItem from '@/components/searchItem.vue'
+    import editable from 'static/img/editable.png'
     import edit from 'static/img/edit.png'
-    import del from 'static/img/del.png'
+    import del from 'static/img/delArticle.png'
 	export default {
 	    data() {
 	        return {
@@ -176,6 +177,7 @@
                 isTipVisible:false,
                 edit:edit,
                 del:del,
+                editable:editable,
                 queryParams: {
                 }
 	        }
@@ -187,25 +189,26 @@
 	    created() {
 	    	// 默认日期为今天
 	    	this.dateArr = ["",""];
-            // this.dateArr = [this.getCurDate(),this.getCurDate()];
-            console.log(this.dateArr);
             this.queryParams = this.getQueryParams();
             this.getDataTable(this.queryParams);
-            // console.log(this.getCurDate());
 	    },
         watch: {
             'dateArr'(newVal,oldVal){
+                // debugger
                 //首次加载时间时拿不到其他的query  所以不发table请求 
                 if(oldVal.length != 2){
                     return;
                 }
-                // console.log('this.dateArr=>', data_start,data_end);
-                // console.log(newVal);
-                if(this.dateArr[0]!=""&&this.dateArr[1]!=""){
+                if(newVal===null || oldVal===null){
+                    this.dateArr = ["",""];
+                    oldVal=this.dateArr;
+                    newVal=this.dateArr;
+                }
+                if(newVal[0]!="" && newVal[1]!=""){
                     this.dateArr[0] = this.timestampToTime(newVal[0]); 
                     this.dateArr[1] = this.timestampToTime(newVal[1]);
+                    console.log('this.dateArr=>',this.dateArr)
                 }
-                console.log(this.dateArr[0]);
                 this.queryParams = this.getQueryParams();
                 this.getDataTable(this.queryParams);
             }
@@ -233,7 +236,6 @@
             getDataTable(params){
                 ajaxPost('/report/get_rpt_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
-                    console.log(res.data,result);
                     this.reportListData = result.data;
                     this.total_num = result.data_num;
                     this.page_num = result.page_num;
@@ -248,7 +250,6 @@
             },
             handleChangeCommandRoot(item,index,isShow){
                 // debugger
-                console.log(item,index,123123);
                 this.keyword = item.name;
                 this.show_dialog = isShow;
                 this.search_val = item.name;
@@ -281,21 +282,19 @@
                 });
             },
             handleDel(index,value){
-                console.log(index,value);
                 this.dialogVisible = true;
                 this.curDelId = value.id;
-                console.log(this.curDelId);
-                
             },
             handleEdit(index,value){
-                console.log(value.id);
-               this.$router.push({ path: '/reportEdit', query: { id: value.id } });
+                if(!value.isTimeout){
+                    this.$router.push({ path: '/reportEdit', query: { id: value.id } });
+                }
+                console.log(value);  
             },
             closeDialog(){
                this.iscloseDialog = true;
             },
             selfConfirm(){
-                console.log('this.curDelId=>', this.curDelId);
                 this.reportListData.splice(this.curDelId,1); 
                 const params = {
                     rpt_id: this.curDelId
@@ -414,6 +413,10 @@
             width: 90px;
             margin-left: 10px;
             vertical-align: bottom;
+        }
+        .edit_btn{
+            position: relative;
+            top: 1px;
         }
     }
 </style>
