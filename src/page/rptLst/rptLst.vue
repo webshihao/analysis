@@ -134,6 +134,9 @@
 	        return {
     	        dateArr: ["",""],
     	        pickerOptions: {
+                  disabledDate(time) {
+                        return time.getTime() > Date.now() - 8.64e6;
+                  },
                   shortcuts: [{
                     text: '今天',
                     onClick(picker) {
