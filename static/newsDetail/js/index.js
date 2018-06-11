@@ -5,16 +5,13 @@
             textStr='',
             dataRes=[],       
             statusArr=[],
-            contentArr=[];
-            rptId= +window.location.search.slice(1).split("=")[1];  
-            function timeFormat(date){
-                var da = date;
-                da = new Date(da);
-                var year = da.getFullYear()+'年';
-                var month = da.getMonth()+1+'月';
-                var date = da.getDate()+'日';
-                return [year,month,date].join('');
-            } 
+            contentArr=[],
+            rptId= +window.location.search.slice(1).split("=")[1];
+            console.log('rptId=>',rptId);  
+            function GetDateDiff(startDiffTime) {
+                var newTime = startDiffTime.substring(0,10).replace(/\./g, "/");
+                return newTime;    
+            }; 
             function showAll(){
                 $('ul#thelist').on('click','a.toggle',function () {
                 //点击按钮的时候改变开关的值
@@ -43,10 +40,11 @@
                     domClass   : 'dropload-down',
                     domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
                     domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
-                    domNoData  : '<div class="dropload-noData">暂无数据</div>'
+                    domNoData  : '<div class="dropload-noData">我也是有底线的</div>'
                 },
                 loadDownFn : function(me) {
                     pageSize++;
+                    // rptId= +window.location.search.slice(1).split("=")[1];
                     var htmlStr="";
                     $.ajax({  
                     contentType: "application/json;charset=UTF-8",
@@ -60,9 +58,9 @@
                         total_page=data.result.total_page;
                         var sectStr=""; 
                         var arrLen = dataRes.length;
-                         console.log(pageSize,arrLen);
                         $('.new_heading').text(data.result.rpt_name);
-                        $('.new_time').text(timeFormat(data.result.time));
+                        var newsTime=GetDateDiff(data.result.time);
+                        $('.new_time').text(newsTime);
                         if(dataRes.length>0){
                             for( var i=0;i<arrLen;i++){ 
                                 textStr=dataRes[i].cont.replace(/\n/g,"<br>");
