@@ -39,6 +39,7 @@
                 if (r != null) return unescape(r[2]); 
                return null; 
             }
+            var rptId=getUrlParams(id);
             // 上拉加载
             var dropload = $('#wrap').dropload({
                 scrollArea : window,
@@ -50,7 +51,6 @@
                 },
                 loadDownFn : function(me) {
                     pageSize++;
-                    var rptId=getUrlParams(rptId);
                     var htmlStr="";
                     $.ajax({  
                     contentType: "application/json;charset=UTF-8",
