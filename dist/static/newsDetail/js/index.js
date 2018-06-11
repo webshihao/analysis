@@ -7,7 +7,7 @@
             statusArr=[],
             contentArr=[];
             // rptId= +window.location.search.slice(1).split("=")[1];
-            console.log('rptId=>',rptId);  
+            // console.log('rptId=>',rptId);  
             function GetDateDiff(startDiffTime) {
                 var newTime = startDiffTime.substring(0,10).replace(/\./g, "/");
                 return newTime;    

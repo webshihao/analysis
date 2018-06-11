@@ -50,7 +50,7 @@
                 },
                 loadDownFn : function(me) {
                     pageSize++;
-                    var rptId=getUrlParams(rptId);
+                    var rptId=getUrlParams(id);
                     var htmlStr="";
                     $.ajax({  
                     contentType: "application/json;charset=UTF-8",
