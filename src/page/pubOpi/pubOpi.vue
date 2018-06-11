@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-11 16:07:22
+* @Last Modified: 2018-06-11 17:35:50
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -143,9 +143,12 @@
           :visible.sync="dialogVisible"
           width="25%"
           >
-          <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)">
-              <span>{{report.name}}</span><img v-if="report.isChecked" :src="addReportImg" alt="">
+          <div class="reportWrap">
+              <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)">
+                  <span>{{report.name}}</span><img v-if="report.isChecked" :src="addReportImg" alt="">
+              </div>
           </div>
+          
           <div>
               <el-input
                 class="input-new-tag"
@@ -220,6 +223,10 @@
             }
             
 		}
+        .reportWrap {
+            height: 226px;
+            overflow-y: scroll;
+        }
         .reportlist_div {
             cursor: pointer;
             height: 45px;
@@ -349,7 +356,7 @@
 	    	var p2 = this.getCollectionList();
 	    	var p3 = this.getMediaList();
 	    	// 默认日期为今天
-	    	this.dateArr = [this.getCurDate(),this.getCurDate()];
+	    	this.dateArr = [this.getPrevDate(),this.getCurDate()];
 	    	Promise.all([p1,p2,p3]).then((res)=>{
                 // console.log(res,1);
                 this.queryParams = this.getQueryParams();
@@ -374,7 +381,13 @@
             }
         },   
 	    methods: {
-	    	// 获取当前日期
+	    	// 获取上个月日期
+            getPrevDate(){
+
+                const customDate = new Date().getTime() - 3600 * 1000 * 24 * 30;
+                return new Date(customDate).getFullYear().toString() + (new Date(customDate).getMonth() + 1).toString().padStart(2,"0") + new Date(customDate).getDate().toString().padStart(2,"0");
+            },
+            // 获取当前日期
 	    	getCurDate(){
 	    		return new Date().getFullYear().toString() + (new Date().getMonth() + 1).toString().padStart(2,"0") + new Date().getDate().toString().padStart(2,"0");
 	    	},
@@ -437,7 +450,6 @@
 	    	},
 	    	handleChangeSearch(value,isShow){
                 // debugger
-                console.log(value,isShow,'2222')
                 this.keyword = !!value ? value : '';  
                 this.show_dialog = isShow; 
                 const params = {

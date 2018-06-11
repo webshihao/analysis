@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-07 11:05:25
+* @Last Modified: 2018-06-11 17:07:53
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -33,9 +33,10 @@
     					:prop_search_val="search_val"
                         @clearCommand="handleClear"
     					@changeSearch="handleChangeSearch"
+                        @commandEnterRenderTable="handleEnterRenderTable"
     					@changeCommandRoot="handleChangeCommandRoot"
     				>
-    					<img slot="search_icon" src="../../../static/img/search_icon.png" alt="">
+    					<img slot="search_icon" src="../../../static/img/search_icon.png" alt="" @click="clickRenderTable">
     				</searchItem>
     			</div>
                 <el-form-item class="clear"></el-form-item>
@@ -105,7 +106,7 @@
         <el-pagination
           background
           layout="prev, pager, next"
-          :page-size="5"
+          :page-size="10"
           :current-page="1"
           :total="total_num"
           @current-change="handleCurPage"
@@ -347,6 +348,19 @@
                 this.page_num = val;
                 this.queryParams = this.getQueryParams();
                 this.getDataTable(this.queryParams);
+            },
+            // 点击小图标
+            clickRenderTable(){
+                this.show_dialog = false;
+                this.queryParams = this.getQueryParams();
+                this.getDataTable(this.queryParams);
+            },
+            // 点击回车
+            handleEnterRenderTable(val){
+                this.show_dialog = false;
+                this.keyword = val;
+                this.queryParams = this.getQueryParams();
+                this.getDataTable(this.queryParams);               
             }
 	    },
         mounted(){
