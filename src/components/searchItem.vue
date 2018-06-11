@@ -1,7 +1,7 @@
 <template>
     <div class="input-wrap" @click="searchClick($event)">
-        <input type="text" v-model="search_val" :placeholder="input_tips">
-        <slot name="search_icon"></slot>
+        <input type="text" v-model="search_val" @keyup.enter="enterClick(search_val)" :placeholder="input_tips">
+        <slot name="search_icon" ></slot>
         <div class="dialog_wrap" v-show="show_dialog">
             <ul class="search-wrap">
                 <template v-for="(root_item,root_index) in search_arr">
@@ -142,6 +142,9 @@
             },
             clearClick(){
                 this.$emit('clearCommand',this.search_arr);
+            },
+            enterClick(val){
+                this.$emit('commandEnterRenderTable',val);
             }
         }
     }

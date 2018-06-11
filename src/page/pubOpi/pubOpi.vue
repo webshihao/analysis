@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-08 11:33:10
+* @Last Modified: 2018-06-11 16:07:22
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -12,20 +12,24 @@
 <template>
     <div class="query_condition">
     	<el-form :inline="true" class="demo-form-inline">
-    		<el-form-item>
-    			<el-date-picker
-    			      v-model="dateArr"
-    			      type="daterange"
-    			      align="right"
-    			      unlink-panels
-    			      range-separator="至"
-    			      start-placeholder="开始日期"
-    			      end-placeholder="结束日期"
-    			      value-format="yyyyMMdd"
-                      :clearable="false"
-    			      :picker-options="pickerOptions">
-    			</el-date-picker>
-    		</el-form-item>
+            <!-- <div> -->
+                <!-- <span>时间</span> -->
+                        <el-form-item>
+                            <el-date-picker
+                                  v-model="dateArr"
+                                  type="daterange"
+                                  align="right"
+                                  unlink-panels
+                                  range-separator="至"
+                                  start-placeholder="开始日期"
+                                  end-placeholder="结束日期"
+                                  value-format="yyyyMMdd"
+                                  :clearable="false"
+                                  :picker-options="pickerOptions">
+                            </el-date-picker>
+                        </el-form-item>
+            <!-- </div> -->
+    		
     		<el-form-item>
     			<dropdownItem
     			    :dropName="collectionObj.name"
@@ -56,9 +60,10 @@
     					:prop_search_val="search_val"
                         @clearCommand="handleClear"
     					@changeSearch="handleChangeSearch"
+                        @commandEnterRenderTable="handleEnterRenderTable"
     					@changeCommandRoot="handleChangeCommandRoot"
     				>
-    					<img slot="search_icon" src="../../../static/img/search_icon.png" alt="">
+    					<img slot="search_icon" src="../../../static/img/search_icon.png" alt="" @click="clickRenderTable">
     				</searchItem>
     			</div>
     		</el-form-item>
@@ -141,7 +146,7 @@
           <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)">
               <span>{{report.name}}</span><img v-if="report.isChecked" :src="addReportImg" alt="">
           </div>
-          <div v-if="isShowNewTag">
+          <div>
               <el-input
                 class="input-new-tag"
                 v-if="inputVisible"
@@ -152,7 +157,7 @@
                 @blur="handleInputConfirm"
               >
               </el-input>
-              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+              <el-button class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
           </div>
           
         </el-dialog>
@@ -427,6 +432,7 @@
 	    	},
 	    	handleChangeSearch(value,isShow){
                 // debugger
+                console.log(value,isShow,'2222')
                 this.keyword = !!value ? value : '';  
                 this.show_dialog = isShow; 
                 const params = {
@@ -439,8 +445,11 @@
                     }else{
                         this.$message.error(msg);
                     }
-                    
                 })
+                // if(!!value){
+                //     this.queryParams = this.getQueryParams()
+                //     this.getDataTable(this.queryParams)
+                // }
             },
             handleChangeCommandRoot(item,index,isShow){
                 // debugger
@@ -607,6 +616,19 @@
                     }
                     
                 });
+            },
+            // 点击小图标
+            clickRenderTable(){
+                this.show_dialog = false;
+                this.queryParams = this.getQueryParams();
+                this.getDataTable(this.queryParams);
+            },
+            // 点击回车
+            handleEnterRenderTable(val){
+                this.show_dialog = false;
+                this.keyword = val;
+                this.queryParams = this.getQueryParams();
+                this.getDataTable(this.queryParams);               
             }
 	    },
         mounted(){

@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-08 11:07:44
+* @Last Modified: 2018-06-11 14:39:58
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -14,7 +14,7 @@
         <div class="report_div">
             <input v-model="reportTitle" class="reportTitle" placeholder="请输入内容"/>
             <h2 class="time_h2">{{time}}</h2>
-            <div class="cont_wrap" v-for="(article,index) in articleList">
+            <div class="cont_wrap" v-for="(article,index) in articleList" v-dragging="{item: article,list: articleList,group: 'article'}" :key="article.title">
                 <input class="cont_num" type="text" v-model="article.rptOrder" @blur="sortList"><input class="title_input" v-model="article.title" disabled="true" /><img class="delImg" :src="delImg" @click="delArticle(article,index)" alt=""><textarea :class="{allWidth: !article.bgImg}" name="" id="" cols="30" rows="10" v-model="article.cont"></textarea><img v-if="article.bgImg" :src="article.bgImg" class="bg_img" alt="">
             </div>
             
@@ -183,6 +183,7 @@
            
 	    },
         watch: {
+
             // before
         },  
         beforeRouteLeave(to,from,next){
@@ -287,7 +288,11 @@
             }
 	    },
         mounted(){
-            
+            this.$dragging.$on('dragged', ({ value }) => {
+                value.list.forEach((item,index) => {
+                    item.rptOrder = index+1;
+                })
+            })
         }
 	}
 </script>
