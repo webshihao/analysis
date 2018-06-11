@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-11 16:07:22
+* @Last Modified: 2018-06-11 17:07:37
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -143,9 +143,12 @@
           :visible.sync="dialogVisible"
           width="25%"
           >
-          <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)">
-              <span>{{report.name}}</span><img v-if="report.isChecked" :src="addReportImg" alt="">
+          <div class="reportWrap">
+              <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)">
+                  <span>{{report.name}}</span><img v-if="report.isChecked" :src="addReportImg" alt="">
+              </div>
           </div>
+          
           <div>
               <el-input
                 class="input-new-tag"
@@ -220,6 +223,10 @@
             }
             
 		}
+        .reportWrap {
+            height: 226px;
+            overflow-y: scroll;
+        }
         .reportlist_div {
             cursor: pointer;
             height: 45px;
@@ -432,7 +439,6 @@
 	    	},
 	    	handleChangeSearch(value,isShow){
                 // debugger
-                console.log(value,isShow,'2222')
                 this.keyword = !!value ? value : '';  
                 this.show_dialog = isShow; 
                 const params = {
