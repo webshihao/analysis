@@ -5,8 +5,8 @@
             textStr='',
             dataRes=[],       
             statusArr=[],
-            contentArr=[],
-            rptId= +window.location.search.slice(1).split("=")[1];
+            contentArr=[];
+            // rptId= +window.location.search.slice(1).split("=")[1];
             console.log('rptId=>',rptId);  
             function GetDateDiff(startDiffTime) {
                 var newTime = startDiffTime.substring(0,10).replace(/\./g, "/");
@@ -33,6 +33,12 @@
                  }
              })
             }
+            function getUrlParams(name) { 
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //定义正则表达式 
+                var r = window.location.search.substr(1).match(reg);  
+                if (r != null) return unescape(r[2]); 
+               return null; 
+            }
             // 上拉加载
             var dropload = $('#wrap').dropload({
                 scrollArea : window,
@@ -44,7 +50,7 @@
                 },
                 loadDownFn : function(me) {
                     pageSize++;
-                    // rptId= +window.location.search.slice(1).split("=")[1];
+                    var rptId=getUrlParams(rptId);
                     var htmlStr="";
                     $.ajax({  
                     contentType: "application/json;charset=UTF-8",

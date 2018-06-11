@@ -269,7 +269,12 @@
     	        dateArr: [],
     	        pickerOptions: {
                      disabledDate(time) {
-                        return time.getTime() > Date.now() - 8.64e6;
+                        // const end = new Date();
+                        // const start = new Date();
+                        // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        // // return time.getTime() > Date.now() - 8.64e6;
+                        // return [start,end]
+                        // return time.getTime() < this.start;    
                   },
                   shortcuts: [{
                     text: '今天',

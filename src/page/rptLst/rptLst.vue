@@ -135,7 +135,16 @@
     	        dateArr: ["",""],
     	        pickerOptions: {
                   disabledDate(time) {
-                        return time.getTime() > Date.now() - 8.64e6;
+                    console.log(time);
+                    // let curDate = time.getTime();
+                    // let three = 60 * 24 * 3600 * 1000;
+                    let curDate = (new Date()).getTime();
+            let three = 90 * 24 * 3600 * 1000;
+            let threeMonths = curDate - three;
+                return time.getTime() > Date.now() || time.getTime() < threeMonths;
+                    // let threeMonths = curDate - three;
+                    // console.log(threeMonths);
+                    // return time.setTime(time.getTime()-3600 * 1000 * 24 * 30);
                   },
                   shortcuts: [{
                     text: '今天',
