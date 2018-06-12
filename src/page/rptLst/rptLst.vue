@@ -54,6 +54,7 @@
     		    <el-table-column
     		      label="报告名称"
                   align="left"
+                  width="400"
     		      prop="repName">
                   <template slot-scope="scope">
                     <a
@@ -66,22 +67,20 @@
     		    </el-table-column>
     		    <el-table-column
     		      label="时间"
-    		      align="center"
-                  width="150"
+    		      align="left"
+                  width="600"
     		      prop="createtime">
     		    </el-table-column>
     		    <el-table-column
     		      label="操作"
-    		      align="left"
+    		      align="center"
                   width="150"
     		      prop="desc">
                     <template slot-scope="scope">
                         <el-row>
-                             <img @click="handleEdit(scope.$index,scope.row)" :src="scope.row.isTimeout === false ? editable : edit"  alt="">
+                             <img @click="handleEdit(scope.$index,scope.row)" :src="edit"  alt="">
                             <img @click="handleDel(scope.$index,scope.row)" :src="del" class="edit_btn" alt="">
                         </el-row>
-                        <!-- <el-button type="text" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
-                        <el-button type="text" size="small" :disabled="scope.row.isTimeout" @click="handleEdit(scope.$index,scope.row)">编辑</el-button> -->
                     </template>
     		    </el-table-column>
     		  </el-table>
@@ -401,10 +400,7 @@
             span {
                 display: inline-block;
             }
-            img {
-                display: inline-block;
-                vertical-align: middle;
-            }
+           
         }
         .button-new-tag {
             margin-left: 10px;
@@ -421,6 +417,7 @@
         .edit_btn{
             position: relative;
             top: 1px;
+            margin-left:40px;
         }
     }
     .el-pagination {
@@ -431,6 +428,13 @@
                 background: #f00;
             }
         }
+    }
+    .table_wrap{
+         img {
+                display: inline-block;
+                vertical-align: middle;
+                cursor: pointer;
+            }
     }
         
 </style>

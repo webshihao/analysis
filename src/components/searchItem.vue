@@ -1,6 +1,8 @@
 <template>
     <div class="input-wrap" @click="searchClick($event)">
-        <input type="text" v-model="search_val" @keyup.enter="enterClick(search_val)" :placeholder="input_tips">
+        <input type="text" v-model="search_val" @keyup.enter="enterClick(search_val)" @keydown.down.prevent="selectDown"
+    @keydown.up.prevent="selectUp"  :placeholder="input_tips">
+    <ul>
         <slot name="search_icon" ></slot>
         <div class="dialog_wrap" v-show="show_dialog">
             <ul class="search-wrap">
@@ -13,9 +15,89 @@
             </ul>
             <span class="clear" @click="clearClick">清空历史数据</span>
         </div>
-        
+        </ul>
     </div>
 </template>
+
+<script>
+    import { containEle,throttle } from '@/util/util.js'
+    export default {
+        props: {
+            search_arr: {
+                type: Array,
+                default: []
+            },
+            show_dialog: {
+                type: Boolean,
+                default: false
+            },
+            input_tips: {
+                type: String,
+                default: '请输入'
+            },
+            prop_search_val: {
+                type: String,
+                default: ''
+            }
+        },
+        data(){
+            return {
+                search_val: '',
+                // 三种状态
+                isClick: true,    //点击div
+                isSearch: false,  //搜索
+                isChoose: false,  //点击li
+                now: -1,
+                flag:false
+            }
+        },
+        watch:{
+            'search_val': throttle(function(newVal) { 
+               this.isChoose ? this.isSearch = false : this.isSearch = true;
+              // this.$emit('changeSearch',newVal.toLowerCase(), this.isSearch);
+            }, 500),
+        },
+        methods: {
+           searchClick(event){
+               // 防止事件冒泡
+               if(event.target.nodeName == 'INPUT'){
+                   this.isChoose = false;
+                   this.isSearch = false;
+                   this.$emit('changeSearch',this.search_val,this.isClick);
+               }
+           },
+           selectDown() {
+                this.now++;
+                if(this.now==this.search_arr.length)this.now=-1;
+                console.log('this.search_arr.length=>',this.search_arr.length);
+                console.log('this.search_arr=>',this.search_arr,'this.now=>',this.now);
+                this.search_val=this.search_arr[this.now].name;
+                console.log('this.search_val=>',this.search_val,'this.search_arr[this.now]=>',this.search_arr[this.now])
+            },
+           selectUp(){
+            this.now--;
+                if(this.now==-2)this.now=this.search_arr.length-1;
+                console.log('this.search_arr=>',this.search_arr,'this.now=>',this.now);
+                this.search_val=this.search_arr[this.now].name;
+                console.log('this.search_val=>',this.search_val,'this.search_arr[this.now]=>',this.search_arr[this.now])
+           },
+           commandClick(item,index){
+               this.$emit('changeCommand',item,index);
+           },
+           commandClickRoot(item,index){
+               this.search_val = item.name;   
+               this.$emit('changeCommandRoot',item,index,this.isChoose);
+               this.isChoose = true;                                           
+            },
+            clearClick(){
+                this.$emit('clearCommand',this.search_arr);
+            },
+            enterClick(val){
+                this.$emit('commandEnterRenderTable',val);
+            }
+        }
+    }
+</script>
 <style lang="less">
     .input-wrap {
         width: 288px;
@@ -88,65 +170,3 @@
         
     }
 </style>
-<script>
-    import { containEle,throttle } from '@/util/util.js'
-    export default {
-        props: {
-            search_arr: {
-                type: Array,
-                default: []
-            },
-            show_dialog: {
-                type: Boolean,
-                default: false
-            },
-            input_tips: {
-                type: String,
-                default: '请输入'
-            },
-            prop_search_val: {
-                type: String,
-                default: ''
-            }
-        },
-        data(){
-            return {
-                search_val: '',
-                // 三种状态
-                isClick: true,    //点击div
-                isSearch: false,  //搜索
-                isChoose: false,  //点击li
-            }
-        },
-        watch:{
-            'search_val': throttle(function(newVal) { 
-               this.isChoose ? this.isSearch = false : this.isSearch = true;
-               this.$emit('changeSearch',newVal.toLowerCase(), this.isSearch);
-            }, 500),
-        },
-        methods: {
-           searchClick(event){
-               // 防止事件冒泡
-               if(event.target.nodeName == 'INPUT'){
-                   this.isChoose = false;
-                   this.isSearch = false;
-                   this.$emit('changeSearch',this.search_val,this.isClick);
-               }
-           },
-           commandClick(item,index){
-               this.$emit('changeCommand',item,index);
-           },
-           commandClickRoot(item,index){
-               this.search_val = item.name;   
-               this.$emit('changeCommandRoot',item,index,this.isChoose);
-               this.isChoose = true;                                           
-            },
-            clearClick(){
-                this.$emit('clearCommand',this.search_arr);
-            },
-            enterClick(val){
-                this.$emit('commandEnterRenderTable',val);
-            }
-        }
-    }
-</script>

@@ -21,8 +21,8 @@
         </div>
         <div class="btn_wrap">
             <div class="btn_arr">
-                <el-button type="default" @click="cancel">取消</el-button>
-                <el-button type="primary" @click="save">保存</el-button>
+                <el-button type="primary" @click="save" style="width:120px;border-radius:2px;">保存</el-button>
+                <el-button type="default" @click="cancel" style="width:120px;border-radius:2px;">退出</el-button>
             </div>
             
         </div>
@@ -85,6 +85,7 @@
                 border-bottom-color: transparent;
                 font-size: 16px;
                 color: #8e8e8e;
+                cursor: move;
             }
             .delImg {
                 width: 23px;
