@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-17 17:41:39
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 10:18:38
+* @Last Modified: 2018-06-12 12:09:00
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -12,24 +12,23 @@
 <template>
 	<div class="container" id="container">
 		<div class="login_bg"></div>
-		<!-- <img class="login_bg" :src="login_bg" alt=""> -->
 		<div class="content">
 			<h2>账号登陆</h2>
 			<div class="login__pane">
-			    <div class="user_name input_box">
+			    <div class="user_name input_box" :class="{active: isActive == 1}" @click="addColor(1)">
 			        <div class="returnInfo">
 			            <span>{{returnInfo}}</span>
 			        </div>
 			        <img src="../../../static/img/user.svg" />
-			        <input type="text" v-model="username" placeholder="用户名"/>
+			        <input type="text" v-model="username" placeholder="请输入用户名"/>
 			    </div>
-			    <div class="user_pwd input_box">
+			    <div class="user_pwd input_box" :class="{active: isActive == 2}" @click="addColor(2)">
 			        <img src="../../../static/img/pass.svg" />
-			        <input type="password" v-model="password"  placeholder="密码" />
+			        <input type="password" v-model="password"  placeholder="请输入密码" />
 			    </div>
-			    <div class="checkCode input_box">
+			    <div class="checkCode input_box" :class="{active: isActive == 3}" @click="addColor(3)">
 			        <img src="../../../static/img/code.svg"/>
-			            <input type="text" v-model="codeNum" placeholder="验证码"/>
+			            <input type="text" v-model="codeNum" placeholder="请输入验证码"/>
 			        <div class="checkImg float" @click="setImg">
 			            <img :src="imgSrc" alt="">
 			        </div>
@@ -54,6 +53,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background: #fff;
 		.login_bg {
 			flex: 3;
 			width: 100%;
@@ -65,7 +65,9 @@
 		.content {
 			flex: 2;
 			h2 {
-				
+				margin: 0 auto;
+				width: 70%;
+				text-align: left;
 			}
 			.login__pane{
 			    padding-top: 28px;
@@ -83,9 +85,12 @@
 			        line-height: 40px;
 			        height: 40px;
 			        text-align: left;
-			        border: 1px solid #ebebeb;
+			        border-bottom: 1px solid #DBDBDB;
 			        background: #FFFFFF;
 			        border-radius: 2px;
+			        &.active {
+			        	border-bottom-color: #2ED3A8;
+			        }
 			        .returnInfo{
 			            position: absolute;
 			            top: -42px;
@@ -178,7 +183,7 @@
 			        height: 43px;
 			        margin: 0 auto;
 			        margin-top: 25px;
-			        background: #528DFF;
+			        background: #2ED3A8;
 			        border-radius: 2px;
 			        text-align: center;
 			        cursor: pointer;
@@ -206,7 +211,8 @@
 		ajaxGet,
 		ajaxPost,
 		getStore,
-		setStore
+		setStore,
+		removeStore
 	} from '@/util/util.js'
 	export default {
 	    data() {
@@ -220,7 +226,8 @@
 	        	is_save_userinfo: false,
 	        	password: '',
 	        	returnInfo: '',
-	        	codeNum: ''
+	        	codeNum: '',
+	        	isActive: 0
 	        }
 	    },
 	    components: {
@@ -229,6 +236,7 @@
 	    	if(getStore('password')){
 	    		this.password = getStore('password');
 	    	}
+	    	removeStore('nav_index');
 	    	this.setImg();
 	    },
 	    mounted(){
@@ -274,6 +282,17 @@
 	    	change_save(){
 	    		this.is_save_userinfo = !this.is_save_userinfo;
 	    		setStore('password',this.password);
+	    	},
+	    	addColor(index){
+	    		this.isActive = index;
+	    		// event.preventDefault();
+	    		// event.stopPropagation();
+	    		// // 将所有的color还原
+	    		// const allDOM = document.getElementsByClassName('input_box');
+	    		// for(var i=0;i<allDOM.length;i++){
+	    		// 	allDOM[i].style.borderBottomColor = '#dbdbdb';
+	    		// }
+	    		// event.target.parentElement.style.borderBottomColor = '#2ED3A8';
 	    	}
 	    }
 	}

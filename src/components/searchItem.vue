@@ -28,21 +28,22 @@
         z-index: 10;
         input {
             width: 200px;
-            border: 1px solid #cfd2da;
+            background: #FFFFFF;
+            border: 1px solid #CFD0D1;
+            border-radius: 4px;
             outline: 0;
-            border-radius: 12px;
             font-size: 14px;
-            line-height: 29px;
-            height: 29px;
+            line-height: 40px;
+            height: 40px;
             padding-left: 10px;
             box-sizing: border-box;
         }
         img {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             position: absolute;
             right: 5px;
-            top: 13px;
+            top: 11px;
         }
         .dialog_wrap {
             width: 200px;

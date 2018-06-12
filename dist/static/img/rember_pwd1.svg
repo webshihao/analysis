@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>记住密码_对号</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group">
-            <rect id="Rectangle-40" stroke="#979797" x="0.5" y="0.5" width="14" height="14"></rect>
-            <path d="M3.06266266,9.17333105 L6.875,11.875" id="Line-11" stroke="#528DFF" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M6.875,11.875 L11.875,3.125" id="Line-12" stroke="#528DFF" stroke-linecap="round" stroke-linejoin="round"></path>
+        <g id="登录状态" transform="translate(-958.000000, -427.000000)">
+            <g id="Group-7" transform="translate(958.000000, 160.000000)">
+                <g id="Group-11" transform="translate(0.000000, 266.000000)">
+                    <g id="Group-13" transform="translate(0.000000, 1.000000)">
+                        <rect id="Rectangle-15" fill="#2ED3A8" opacity="1" x="0" y="0" width="18" height="18" rx="2"></rect>
+                        <path d="M5.65685425,8.65685425 L12.6568542,8.65685425 C13.209139,8.65685425 13.6568542,9.1045695 13.6568542,9.65685425 C13.6568542,10.209139 13.209139,10.6568542 12.6568542,10.6568542 L4.65685425,10.6568542 C4.1045695,10.6568542 3.65685425,10.209139 3.65685425,9.65685425 L3.65685425,5.65685425 C3.65685425,5.1045695 4.1045695,4.65685425 4.65685425,4.65685425 C5.209139,4.65685425 5.65685425,5.1045695 5.65685425,5.65685425 L5.65685425,8.65685425 Z" id="Combined-Shape" fill="#FFFFFF" transform="translate(8.656854, 7.656854) rotate(-45.000000) translate(-8.656854, -7.656854) "></path>
+                    </g>
+                </g>
+            </g>
         </g>
     </g>
 </svg>

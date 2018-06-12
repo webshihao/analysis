@@ -2,8 +2,8 @@
 * @Created Date:   2018-05-21 10:00:50
 * @Author: yiche
 * ------
-* @Last Modified: 2018-05-25 17:00:52
-* @Modified by:   yiche
+* @Last Modified: 2018-06-12 11:27:45
+* @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
 * ---------------------------------------
@@ -62,6 +62,13 @@ export const setStore = (name, content) => {
 export const getStore = name => {
     if (!name) return;
     return window.sessionStorage.getItem(name);
+}
+/**
+ * 删除sessionStorage
+ */
+export const removeStore = name => {
+    if (!name) return;
+    return window.sessionStorage.removeItem(name);
 }
 
 /**

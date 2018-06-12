@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-11 16:38:48
+* @Last Modified: 2018-06-12 14:05:08
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -258,6 +258,10 @@
                 });
             },
             saveAjax(callback){
+                // 把order调整顺序
+                this.articleList.forEach((item,index) => {
+                    item.rptOrder = index + 1;
+                });
                 const params = {
                     rpt_id: this.$route.query.id,
                     rpt_name: this.reportTitle,

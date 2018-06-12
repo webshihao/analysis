@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-11 17:07:53
+* @Last Modified: 2018-06-12 15:17:27
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -50,7 +50,7 @@
                 @cell-mouse-enter="handleTableHover"
                 @cell-mouse-leave="handleTableLeave"
     		    :data="reportListData"
-    		    style="width: 100%">
+    		    style="width: 100%;padding: 0 30px;">
     		    <el-table-column
     		      label="报告名称"
                   align="left"
@@ -112,7 +112,7 @@
           @current-change="handleCurPage"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
-          style="float:right; margin-right:50px;"
+          style="float:right; margin-right:68px;"
           >
         </el-pagination>
     </div>
@@ -241,7 +241,7 @@
                 ajaxPost('/report/get_rpt_list',params).then((res)=>{
                     const {ret_code,msg,result} = res.data;
                     this.reportListData = result.data;
-                    this.total_num = result.data_num;
+                    this.total_num = result.totle_num;
                     this.page_num = result.page_num;
                 });
             },
@@ -359,7 +359,7 @@
         }
 	}
 </script>
-<style lang="less">
+<style scoped lang="less">
     clearfix:after{
         display: block;
         clear: both;
@@ -429,14 +429,6 @@
             top: 1px;
         }
     }
-    .el-pagination{
-        margin-top:13px;
-    }
-    .el-pagination.is-background .el-pager li:not(.disabled).active{
-        background: #2ED3A8;
-    }
-    .el-table--fit{
-        padding:0 30px;
-    }
+    
         
 </style>

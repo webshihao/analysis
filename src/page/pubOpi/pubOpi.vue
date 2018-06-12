@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-11 17:35:50
+* @Last Modified: 2018-06-12 15:26:23
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -14,20 +14,20 @@
     	<el-form :inline="true" class="demo-form-inline">
             <!-- <div> -->
                 <!-- <span>时间</span> -->
-                        <el-form-item>
-                            <el-date-picker
-                                  v-model="dateArr"
-                                  type="daterange"
-                                  align="right"
-                                  unlink-panels
-                                  range-separator="至"
-                                  start-placeholder="开始日期"
-                                  end-placeholder="结束日期"
-                                  value-format="yyyyMMdd"
-                                  :clearable="false"
-                                  :picker-options="pickerOptions">
-                            </el-date-picker>
-                        </el-form-item>
+            <el-form-item>
+                <el-date-picker
+                      v-model="dateArr"
+                      type="daterange"
+                      align="right"
+                      unlink-panels
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      value-format="yyyyMMdd"
+                      :clearable="false"
+                      :picker-options="pickerOptions">
+                </el-date-picker>
+            </el-form-item>
             <!-- </div> -->
     		
     		<el-form-item>
@@ -76,7 +76,7 @@
                 @cell-mouse-enter="handleTableHover"
                 @cell-mouse-leave="handleTableLeave"
     		    :data="tableData"
-    		    style="width: 100%">
+    		    style="width: 100%;padding: 0 30px;">
     		    <el-table-column type="expand" align="left">
     		      <template slot-scope="props">
     		        <el-form label-position="left" inline class="demo-table-expand">
@@ -144,7 +144,7 @@
           width="25%"
           >
           <div class="reportWrap">
-              <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)">
+              <div v-for="report in reportList" class="reportlist_div" @click="handleChangeReport(report)" :class="{checked: report.isChecked}" >
                   <span>{{report.name}}</span><img v-if="report.isChecked" :src="addReportImg" alt="">
               </div>
           </div>
@@ -173,7 +173,7 @@
           @current-change="handleCurPage"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
-    
+          style="float:right; margin-right:68px;"
           >
         </el-pagination>
     </div>
@@ -199,6 +199,16 @@
 					color: #f00;
 				}
 			}
+            .demo-table-expand {
+                .el-form-item {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    .el-form-item__content {
+                        line-height: 30px;
+                    }
+                }
+                
+            }
             .el-table__body-wrapper {
                 .el-table__row {
                     .cell {
@@ -231,13 +241,20 @@
             cursor: pointer;
             height: 45px;
             line-height: 45px;
+            color: #333;
             &:hover {
-                background: #f5f7fa;
+                color: #328BFF;
+                background: #F8FCFF;
+            }
+            &.checked {
+                color: #999;
             }
             span {
                 display: inline-block;
             }
             img {
+                width: 24px;
+                height: 24px;
                 display: inline-block;
                 vertical-align: middle;
             }
@@ -255,6 +272,7 @@
             vertical-align: bottom;
         }
 	}
+
 </style>
 <script>
 	import {
@@ -335,6 +353,7 @@
                 search_val: '',
                 page_num: 1,
                 totle_num: 0,
+                isChecked: false,
                 queryParams: {
                     // "data_start": "20180501",
                     // "data_end": "20180503",

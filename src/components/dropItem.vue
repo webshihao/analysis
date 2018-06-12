@@ -121,8 +121,9 @@
             width: 118px;
             height: 40px;
             border: 1px solid #D1D5DF;
-            border-radius: 2px;
+            border-radius: 4px;
             background-color: #FFF;
+            box-sizing: border-box;
             &:hover {
                 border-color: #2e2e2e;
             }
@@ -137,7 +138,6 @@
             }
             .dropName-outer{
                 flex:1;
-                background-color: #FFF;
                 height: 100%;
                 .dropName{
                     display: block;
@@ -165,7 +165,7 @@
             width: 70px;
         }
         .dropName {
-            width: 36px!important;
+            width: 40px!important;
             margin-left: 10px!important;
             font-size: 12px!important;
         }
