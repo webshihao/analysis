@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-17 17:41:39
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-06 14:42:41
+* @Last Modified: 2018-06-12 10:18:38
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -10,8 +10,9 @@
 * Javascript will save your soul!
 */
 <template>
-	<div class="container">
-		<img class="login_bg" :src="login_bg" alt="">
+	<div class="container" id="container">
+		<div class="login_bg"></div>
+		<!-- <img class="login_bg" :src="login_bg" alt=""> -->
 		<div class="content">
 			<h2>账号登陆</h2>
 			<div class="login__pane">
@@ -55,10 +56,17 @@
 		align-items: center;
 		.login_bg {
 			flex: 3;
-			
+			width: 100%;
+			height: 100%;
+			background: url(../../../static/img/login.png);
+
+			background-size: cover;
 		}
 		.content {
 			flex: 2;
+			h2 {
+				
+			}
 			.login__pane{
 			    padding-top: 28px;
 			    font-size: 14px;
@@ -222,6 +230,12 @@
 	    		this.password = getStore('password');
 	    	}
 	    	this.setImg();
+	    },
+	    mounted(){
+	    	this.$nextTick(()=>{
+	    	    let height = document.body.clientHeight;
+	    	    document.getElementById('container').style.height = height + 'px';
+	    	})
 	    },
 	    methods: {
 	    	page_jump(str){
