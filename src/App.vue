@@ -47,7 +47,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #fd6853;
+  color: #328BFF;
 }
 a:active {
   outline: 0 none;

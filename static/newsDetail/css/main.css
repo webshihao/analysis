@@ -134,5 +134,7 @@ ul li .icon_arrow{
 　　clear:both;
 }
 
-
+a:hover {
+	text-decoration: none;
+}
 

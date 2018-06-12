@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 15:59:22
+* @Last Modified: 2018-06-12 17:17:28
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -359,7 +359,7 @@
         }
 	}
 </script>
-<style scoped lang="less">
+<style lang="less">
    
     .search_div {
         z-index: 9999;
@@ -423,6 +423,14 @@
             top: 1px;
         }
     }
-    
+    .el-pagination {
+        background: #f00;
+        .el-pager {
+            background: #f00;
+            li.number {
+                background: #f00;
+            }
+        }
+    }
         
 </style>

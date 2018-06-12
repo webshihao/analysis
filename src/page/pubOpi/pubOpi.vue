@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 15:26:23
+* @Last Modified: 2018-06-12 17:13:46
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -173,7 +173,7 @@
           @current-change="handleCurPage"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
-          style="float:right; margin-right:68px;"
+          style="float:right; margin-right:68px;margin-top: 26px;"
           >
         </el-pagination>
     </div>
@@ -272,7 +272,9 @@
             vertical-align: bottom;
         }
 	}
-
+    .el-pagination {
+        background: #f00;
+    }
 </style>
 <script>
 	import {
