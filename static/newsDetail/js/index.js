@@ -1,13 +1,11 @@
-            var len=100,
+            var len=50,
             contentArr=[],
             pageSize=0;
             total_page=0,
             textStr='',
             dataRes=[],       
             statusArr=[],
-            contentArr=[];
-            // rptId= +window.location.search.slice(1).split("=")[1];
-            // console.log('rptId=>',rptId);  
+            contentArr=[];            
             function GetDateDiff(startDiffTime) {
                 var newTime = startDiffTime.substring(0,10).replace(/\./g, "/");
                 return newTime;    
@@ -71,13 +69,13 @@
                             for( var i=0;i<arrLen;i++){ 
                                 textStr=dataRes[i].cont.replace(/\n/g,"<br>");
                                 contentArr.push(textStr);
-                                sectStr = textStr.substring(0, 100)+'...';
+                                sectStr = textStr.substring(0, len)+'...';
                                 if(dataRes[i].bgImg){
                                     htmlStr+='<li>'+  
                                     '<div class="new_content">'+
                                         '<div class="new_source clearfix">'+
                                             '<div class="new_item">'+
-                                                    '<img class="new_icon" src=' + dataRes[i].source_img + '>'+
+                                                    '<img class="new_icon" src='+dataRes[i].source_img+'>'+
                                                     '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
                                             '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+

@@ -39,6 +39,7 @@ html,body{
 	height: 1.066667rem;
 	line-height: 1.066667rem;
 	text-align: center;
+	border-bottom: 1px solid #F5F7FA;
 }
 .new_source .new_item {
 	float: left;
@@ -73,6 +74,9 @@ html,body{
 
 .new_title{
 	margin-top: 0.666667rem;
+	font-family: "PingFangSC-Medium";
+	color: #333;
+	letter-spacing: 0;
 }
 
 ul {
