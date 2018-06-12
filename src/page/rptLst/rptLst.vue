@@ -53,7 +53,8 @@
     		    style="width: 100%">
     		    <el-table-column
     		      label="报告名称"
-    		      align="left"
+                  align="left"
+                  width="600"
     		      prop="repName">
                   <template slot-scope="scope">
                     <a
@@ -66,14 +67,13 @@
     		    </el-table-column>
     		    <el-table-column
     		      label="时间"
-    		      align="center"
-    		      width="150"
+    		      align="left"
+                  width="400"
     		      prop="createtime">
     		    </el-table-column>
     		    <el-table-column
     		      label="操作"
-    		      align="center"
-    		      width="150"
+    		      align="left"
     		      prop="desc">
                     <template slot-scope="scope">
                         <el-row>
@@ -107,7 +107,7 @@
           background
           layout="prev, pager, next"
           :page-size="10"
-          :current-page="1"
+          :current-page="page_num"
           :total="total_num"
           @current-change="handleCurPage"
           @prev-click="handlePrevClick"
@@ -136,16 +136,7 @@
     	        dateArr: ["",""],
     	        pickerOptions: {
                   disabledDate(time) {
-                    console.log(time);
-                    // let curDate = time.getTime();
-                    // let three = 60 * 24 * 3600 * 1000;
-                    let curDate = (new Date()).getTime();
-            let three = 90 * 24 * 3600 * 1000;
-            let threeMonths = curDate - three;
-                return time.getTime() > Date.now() || time.getTime() < threeMonths;
-                    // let threeMonths = curDate - three;
-                    // console.log(threeMonths);
-                    // return time.setTime(time.getTime()-3600 * 1000 * 24 * 30);
+                    return time.getTime() > Date.now() - 86400000;
                   },
                   shortcuts: [{
                     text: '今天',
@@ -327,13 +318,6 @@
             handleTableLeave(row, column, cell, event){
                 // cell.style.color = '#606266'
             },
-            // getQueryParams(){
-            //     this.queryParams.data_start = this.dateArr[0]; 
-            //     this.queryParams.data_end = this.dateArr[1];
-            //     this.queryParams.page_num = this.page_num;
-            //     this.queryParams.keywd = this.keyword;
-            //     return this.queryParams;
-            // },
             handleCurPage(val){
                 this.page_num = val;
                 this.queryParams = this.getQueryParams();
@@ -375,7 +359,7 @@
         }
 	}
 </script>
-<style scoped lang="less">
+<style lang="less">
     clearfix:after{
         display: block;
         clear: both;
@@ -445,4 +429,14 @@
             top: 1px;
         }
     }
+    .el-pagination{
+        margin-top:13px;
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled).active{
+        background: #2ED3A8;
+    }
+    .el-table--fit{
+        padding:0 30px;
+    }
+        
 </style>

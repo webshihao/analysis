@@ -123,6 +123,7 @@ ul li .icon_arrow{
 	font-size: 0.64rem;
 	padding-bottom: 0.32rem;
 	text-decoration: none;
+	text-decoration:none; 
 }
 .clearfix:after{
 　　content:"";

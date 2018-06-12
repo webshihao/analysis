@@ -106,14 +106,13 @@
                                 }
                             }   
                         } else{
-                            // me.lock();
                             me.noData();
                         }
                         setTimeout(function(){
                             $(".new_list").append(htmlStr);
                             showAll();
                             me.resetload();
-                        },2000);
+                        },500);
                     }
                   })
                 }
