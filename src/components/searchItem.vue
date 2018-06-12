@@ -18,7 +18,7 @@
 </template>
 <style lang="less">
     .input-wrap {
-        width: 200px;
+        width: 288px;
         height: 29px;
         float: right;
         display: inline-block;
@@ -27,7 +27,7 @@
         position: relative;
         z-index: 10;
         input {
-            width: 200px;
+            width: 288px;
             background: #FFFFFF;
             border: 1px solid #CFD0D1;
             border-radius: 4px;
@@ -46,11 +46,11 @@
             top: 11px;
         }
         .dialog_wrap {
-            width: 200px;
+            width: 288px;
             height: 178px;
             position: relative;
             .search-wrap {
-                width: 200px;
+                width: 288px;
                 height: 168px;
                 overflow-y: auto;
                 box-shadow: 0 3px 6px 0 rgba(0,0,0,0.10);

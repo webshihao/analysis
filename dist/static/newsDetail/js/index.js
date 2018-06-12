@@ -78,7 +78,7 @@
                                                     '<img class="new_icon" src='+dataRes[i].source_img+'>'+
                                                     '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
-                                            '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+
+                                            '<a href='+ dataRes[i].source_url +' class="new_view" >查看来源</a>'+
                                         '</div>'+
                                         '<div class="new_img">'+
                                             '<img src='+dataRes[i].bgImg+'>'+
@@ -96,7 +96,7 @@
                                                     '<img class="new_icon" src='+dataRes[i].source_img+'>'+
                                                     '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
-                                            '<a class="new_view" href='+ dataRes[i].source_url +'>查看来源</a>'+
+                                            '<a  href='+ dataRes[i].source_url +' class="new_view">查看来源</a>'+
                                         '</div>'+
                                         '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
                                         '<p class="new_detial">'+sectStr+'</p>'+
