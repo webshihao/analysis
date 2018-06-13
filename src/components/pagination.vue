@@ -2,7 +2,7 @@
 * @Created Date:   2018-06-12 18:26:19
 * @Author: huke
 * ------
-* @Last Modified: 2018-06-13 09:23:40
+* @Last Modified: 2018-06-13 14:15:58
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -30,8 +30,8 @@
     			width: 42px;
     			height: 32px;
     			border: 1px solid #CFD0D1;
-    			border-radius: 6px;
-    			background: #fff;
+    			border-radius: 6px !important;
+    			background-color: #fff !important;
     		}
     		.el-pager {
     			.btn-quicknext,.btn-quickprev {
