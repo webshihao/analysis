@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 09:30:32
+* @Last Modified: 2018-06-13 10:15:16
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -54,7 +54,7 @@
     		    <el-table-column
     		      label="报告名称"
                   align="left"
-                  width="400"
+                  width="800"
     		      prop="repName">
                   <template slot-scope="scope">
                     <a
@@ -68,13 +68,12 @@
     		    <el-table-column
     		      label="时间"
     		      align="left"
-                  width="600"
+                  width="300"
     		      prop="createtime">
     		    </el-table-column>
     		    <el-table-column
     		      label="操作"
     		      align="center"
-                  width="150"
     		      prop="desc">
                     <template slot-scope="scope">
                         <el-row>
@@ -415,7 +414,7 @@
         .edit_btn{
             position: relative;
             top: 1px;
-            margin-left:40px;
+            margin-left:25px;
         }
     }
     

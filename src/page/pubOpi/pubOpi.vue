@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 09:25:31
+* @Last Modified: 2018-06-13 10:11:47
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -131,7 +131,7 @@
                     <template slot-scope="scope">
                         <el-row>
                             <img @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 1 ? heartOn : heartOff " alt="">
-                            <img @click="handleReport(scope.$index,scope.row)" :src="addReport" alt="">
+                            <img @click="handleReport(scope.$index,scope.row)" :src="addReport" class="edit_img" alt="">
                         </el-row>
                         
                     </template>
@@ -195,6 +195,11 @@
 					color: #f00;
 				}
 			}
+            .edit_img {
+                position: relative;
+                top: 1px;
+                margin-left:10px;
+            }
             .demo-table-expand {
                 .el-form-item {
                     margin-top: 0;

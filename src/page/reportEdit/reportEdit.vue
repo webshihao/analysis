@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 14:05:08
+* @Last Modified: 2018-06-13 10:06:34
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -22,7 +22,7 @@
         <div class="btn_wrap">
             <div class="btn_arr">
                 <el-button type="primary" @click="save" style="width:120px;border-radius:2px;">保存</el-button>
-                <el-button type="default" @click="cancel" style="width:120px;border-radius:2px;">退出</el-button>
+                <el-button type="default" @click="cancel" style="width:120px;border-radius:2px;">取消</el-button>
             </div>
             
         </div>
