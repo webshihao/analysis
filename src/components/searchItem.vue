@@ -7,7 +7,7 @@
         <div class="dialog_wrap" v-show="show_dialog">
             <ul class="search-wrap">
                 <template v-for="(root_item,root_index) in search_arr">
-                    <li class="root_li" @click="commandClickRoot(root_item,root_index)">{{root_item.name}}</li>
+                    <li class="root_li" :class="{curli:now==root_index}" @click="commandClickRoot(root_item,root_index)">{{root_item.name}}</li>
                     <template v-if="root_item.children" v-for="(item,index) in root_item.children">
                         <li class="title_li" @click="commandClick(item,index)">{{item.name}}</li>
                     </template>
@@ -52,14 +52,26 @@
             }
         },
         watch:{
+            // 当下拉为空时 回退至-1
+            'search_arr'(newVal){
+                if(newVal.length == 0){
+                    this.now = -1;
+                }
+            },
             'search_val': throttle(function(newVal) { 
+                // 判断是否是keyup keydown还是手动输入  通过判断every 
+               this.flag = this.search_arr.some((item)=>item.name == newVal);
                this.isChoose ? this.isSearch = false : this.isSearch = true;
-              // this.$emit('changeSearch',newVal.toLowerCase(), this.isSearch);
+               if(!this.flag){
+                this.$emit('changeSearch',newVal.toLowerCase(), this.isSearch);
+               }
             }, 500),
+
         },
         methods: {
            searchClick(event){
                // 防止事件冒泡
+               this.flag = false;
                if(event.target.nodeName == 'INPUT'){
                    this.isChoose = false;
                    this.isSearch = false;
@@ -67,19 +79,22 @@
                }
            },
            selectDown() {
-                this.now++;
-                if(this.now==this.search_arr.length)this.now=-1;
-                console.log('this.search_arr.length=>',this.search_arr.length);
-                console.log('this.search_arr=>',this.search_arr,'this.now=>',this.now);
-                this.search_val=this.search_arr[this.now].name;
-                console.log('this.search_val=>',this.search_val,'this.search_arr[this.now]=>',this.search_arr[this.now])
+            if(this.search_arr.length == 0) return false;
+            this.flag=true;
+            if(this.flag) {
+                    this.now++;
+                    if(this.now==this.search_arr.length)this.now=0;
+                    this.search_val=this.search_arr[this.now].name;
+                }
             },
            selectUp(){
-            this.now--;
-                if(this.now==-2)this.now=this.search_arr.length-1;
-                console.log('this.search_arr=>',this.search_arr,'this.now=>',this.now);
+            if(this.search_arr.length == 0) return false;
+            this.flag=true;
+            if(this.flag) {
+                this.now--;
+                if(this.now==-2 || this.now==-1)this.now=this.search_arr.length-1;
                 this.search_val=this.search_arr[this.now].name;
-                console.log('this.search_val=>',this.search_val,'this.search_arr[this.now]=>',this.search_arr[this.now])
+            }
            },
            commandClick(item,index){
                this.$emit('changeCommand',item,index);
@@ -148,8 +163,17 @@
                     background: #fff;
                     color: #606060;
                     border: 0;
-                    &.root_li {
+                    &.root_li,&.curli {
                         text-indent: 1em;
+                    }
+                    &.curli {
+                        background-color:#eee;
+                    }
+                    &.root_li{
+                        &:hover {
+                            background-color:#eee; 
+                        }
+                        
                     }
                     &.title_li {
                         text-indent: 2em;

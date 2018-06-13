@@ -139,4 +139,7 @@ a.new_view:hover {
 	color: #328BFF;
 	cursor: pointer;
 }
+a:hover {
+	text-decoration: none;
+}
 

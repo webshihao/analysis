@@ -54,7 +54,6 @@
     		    <el-table-column
     		      label="报告名称"
                   align="left"
-                  width="800"
     		      prop="repName">
                   <template slot-scope="scope">
                     <a
@@ -68,7 +67,6 @@
     		    <el-table-column
     		      label="时间"
     		      align="left"
-                  width="300"
     		      prop="createtime">
     		    </el-table-column>
     		    <el-table-column
