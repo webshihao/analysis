@@ -22,7 +22,7 @@
                 <span :class="['dropName-outer', {'dropName-outer-change': isClickChange }]">
                     <span class="dropName" :title="dropNameText">{{dropNameText}}</span>
                 </span>
-                <img ref="child" :class="{rotateimg:isRotate}" src="../../static/img/arrow__down.svg" height="14" width="22" alt="">
+                <img ref="child" :class="{rotateimg:isRotate}" src="../../static/img/arrowdown.svg" height="24" width="24" alt="">
             </span>
             <div slot="dropdown" ref="dropdown" class="yc-dropdown-menu" v-if="isShowContent">
                 <input 
@@ -130,6 +130,7 @@
             img {
                 vertical-align: text-top;
                 margin-left: -5px;
+                transition: all .5s;
                 &.rotateimg{
                     vertical-align: unset;
                     transform: rotateZ(180deg);

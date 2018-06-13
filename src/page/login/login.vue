@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-17 17:41:39
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 12:09:00
+* @Last Modified: 2018-06-12 18:14:27
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -212,6 +212,9 @@
 		ajaxPost,
 		getStore,
 		setStore,
+		getCookie,
+		setCookie,
+		delCookie,
 		removeStore
 	} from '@/util/util.js'
 	export default {
@@ -268,6 +271,7 @@
 	    		ajaxPost('/login/user_login',params).then((res)=>{
 	    			let {ret_code,msg,result} = res.data;
 	    			if(ret_code == 0){
+	    				setCookie('user_cookie','bond',60);
 	    				setStore('username',this.username)
 	    				this.page_jump('/home');
 	    			}else{

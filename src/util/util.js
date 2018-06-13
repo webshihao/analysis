@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:00:50
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 11:27:45
+* @Last Modified: 2018-06-12 18:09:02
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -129,3 +129,46 @@ export const containEle = function(parentEl, el, container){
     }
     return false;
 }
+
+/**
+ * 
+ * @param {*} c_name 
+ * @param {*} value 
+ * @param {*} expiremMinutes 
+ */
+export const setCookie = function(c_name, value, expiremMinutes) {
+    var exdate = new Date();
+    exdate.setTime(exdate.getTime() + expiremMinutes * 60 * 1000);
+    document.cookie = c_name + "=" + escape(value) + ((expiremMinutes == null) ? "" : ";expires=" + exdate.toGMTString());
+};
+
+/**
+ * 
+ * @param {*} c_name 
+ */
+export const getCookie = function(c_name) {
+    if (document.cookie.length > 0) {
+        var c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            var c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1)
+                c_end = document.cookie.length
+            return unescape(document.cookie.substring(c_start, c_end))
+        }
+    }
+    return ""
+};
+
+/**
+ * 
+ * @param {*} c_name 
+ */
+export const delCookie = function(c_name) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = getCookie(c_name);
+    if (cval != null) {
+        document.cookie = c_name + "=" + cval + ";expires=" + exp.toGMTString();
+    }
+};

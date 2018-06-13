@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 17:13:46
+* @Last Modified: 2018-06-13 09:25:31
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -164,18 +164,14 @@
           </div>
           
         </el-dialog>
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-size="10"
-          :current-page="page_num"
-          :total="totle_num"
-          @current-change="handleCurPage"
-          @prev-click="handlePrevClick"
-          @next-click="handleNextClick"
-          style="float:right; margin-right:68px;margin-top: 26px;"
-          >
-        </el-pagination>
+        <pagination
+            :page_num="page_num"
+            :total_num="total_num"
+            @commandCurPage="handleCurPage"
+            @commandPrevClick="handlePrevClick"
+            @commandNextClick="handleNextClick"
+        >
+        </pagination>
     </div>
 </template>
 
@@ -272,9 +268,7 @@
             vertical-align: bottom;
         }
 	}
-    .el-pagination {
-        background: #f00;
-    }
+    
 </style>
 <script>
 	import {
@@ -285,7 +279,8 @@
         containEle
 	} from '@/util/util.js'
 	import DropdownItem from '@/components/dropItem.vue'
-	import SearchItem from '@/components/searchItem.vue'
+    import SearchItem from '@/components/searchItem.vue'
+	import Pagination from '@/components/pagination.vue'
     import heartOn from 'static/img/heart_on.png'
     import heartOff from 'static/img/heart_off.png'
     import addReport from 'static/img/addReport.png'
@@ -354,7 +349,7 @@
                 keyword: '',
                 search_val: '',
                 page_num: 1,
-                totle_num: 0,
+                total_num: 0,
                 isChecked: false,
                 queryParams: {
                     // "data_start": "20180501",
@@ -370,7 +365,8 @@
 	    },
 	    components: {
 	    	DropdownItem,
-	    	SearchItem
+	    	SearchItem,
+            Pagination
 	    },
 	    created() {
 	    	var p1 = this.getCompetitiveList();
@@ -517,7 +513,7 @@
                         this.tableData = result.data;
                         this.msg_count = result.totle_num;
                         this.page_num = result.page_num;
-                        this.totle_num = result.totle_num;
+                        this.total_num = result.totle_num;
                     }else{
                         this.$message.error(msg);
                     }

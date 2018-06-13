@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 17:17:28
+* @Last Modified: 2018-06-13 09:30:32
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -102,18 +102,14 @@
              </div>
         </template>
   </el-dialog>
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-size="10"
-          :current-page="page_num"
-          :total="total_num"
-          @current-change="handleCurPage"
-          @prev-click="handlePrevClick"
-          @next-click="handleNextClick"
-          style="float:right; margin-right:68px;"
-          >
-        </el-pagination>
+        <pagination
+            :page_num="page_num"
+            :total_num="total_num"
+            @commandCurPage="handleCurPage"
+            @commandPrevClick="handlePrevClick"
+            @commandNextClick="handleNextClick"
+        >
+        </pagination>
     </div>
 </template>
 <script>
@@ -126,6 +122,7 @@
 	} from '@/util/util.js'
 	import DropdownItem from '@/components/dropItem.vue'
 	import SearchItem from '@/components/searchItem.vue'
+    import Pagination from '@/components/pagination.vue'
     import editable from 'static/img/editable.png'
     import edit from 'static/img/edit.png'
     import del from 'static/img/delArticle.png'
@@ -187,7 +184,8 @@
 	    },
 	    components: {
 	    	DropdownItem,
-	    	SearchItem
+	    	SearchItem,
+            Pagination
 	    },
 	    created() {
 	    	// 默认日期为今天
@@ -358,7 +356,7 @@
         }
 	}
 </script>
-<style lang="less">
+<style scoped lang="less">
    
     .search_div {
         z-index: 9999;
@@ -420,15 +418,7 @@
             margin-left:40px;
         }
     }
-    .el-pagination {
-        background: #f00;
-        .el-pager {
-            background: #f00;
-            li.number {
-                background: #f00;
-            }
-        }
-    }
+    
     .table_wrap{
          img {
                 display: inline-block;
