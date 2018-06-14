@@ -2,7 +2,7 @@
 * @Created Date:   2018-06-12 18:26:19
 * @Author: huke
 * ------
-* @Last Modified: 2018-06-13 14:15:58
+* @Last Modified: 2018-06-14 17:06:31
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -14,7 +14,7 @@
       background
       layout="prev, pager, next"
       :page-size="10"
-      :current-page="prop_num"
+      :current-page="page_num"
       :total="total_num"
       @current-change="handleCurPage"
       @prev-click="handlePrevClick"
@@ -73,7 +73,7 @@
         },
         data(){
         	return {
-                prop_num: this.page_num
+
             }
         },
         methods: {

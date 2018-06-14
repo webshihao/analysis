@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-14 10:41:49
+* @Last Modified: 2018-06-14 16:47:51
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -413,9 +413,10 @@
                 if(oldVal.length != 2){
                     return;
                 }
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
             }
+            
         },   
 	    methods: {
 	    	// 获取上个月日期
@@ -472,17 +473,17 @@
 	    	},
 	    	clickCollection(item){
 	    		this.collectionObj = item;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
 	    	},
 	    	clickCompetitive(item){
 	    		this.competitiveObj = item;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
 	    	},
 	    	clickMedia(item){
 	    		this.mediaObj = item;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
 	    	},
 	    	handleChangeSearch(value,isShow){
@@ -511,7 +512,7 @@
                 this.keyword = item.name;
                 this.show_dialog = isShow;
                 this.search_val = item.name;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
             },
 	    	// 获取舆情列表
@@ -631,10 +632,12 @@
             handleTableLeave(row, column, cell, event){
                 // cell.style.color = '#606266'
             },
-            getQueryParams(){
+            // 拿到渲染table所有的参数
+            getQueryParams(pageToOne){
                 this.queryParams.data_start = this.dateArr[0]; 
                 this.queryParams.data_end = this.dateArr[1];
-                this.queryParams.page_num = this.page_num;
+                // 当改变任意筛选条件时page_num = 1
+                this.queryParams.page_num = !!pageToOne ? 1 : this.page_num;
                 this.queryParams.cmp_id = this.competitiveObj.id;
                 this.queryParams.media_id = this.mediaObj.id;
                 this.queryParams.opr_id = this.collectionObj.id;
@@ -671,17 +674,17 @@
                     
                 });
             },
-            // 点击小图标
+            // 点击搜索小图标
             clickRenderTable(){
                 this.show_dialog = false;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
             },
             // 点击回车
             handleEnterRenderTable(val){
                 this.show_dialog = false;
                 this.keyword = val;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);               
             },
             overHeart(event){

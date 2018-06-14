@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-14 11:12:07
+* @Last Modified: 2018-06-14 17:15:25
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -211,7 +211,7 @@
                     this.dateArr[1] = this.timestampToTime(newVal[1]);
                     console.log('this.dateArr=>',this.dateArr)
                 }
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
             }
         },   
@@ -243,10 +243,10 @@
                     this.page_num = result.page_num;
                 });
             },
-            getQueryParams(){
+            getQueryParams(pageToOne){
                 this.queryParams.data_start = this.dateArr[0]; 
                 this.queryParams.data_end = this.dateArr[1];
-                this.queryParams.page_num = this.page_num;
+                this.queryParams.page_num = !!pageToOne ? 1 : this.page_num;
                 this.queryParams.keywd = this.keyword;
                 return this.queryParams;
             },
@@ -255,7 +255,7 @@
                 this.keyword = item.name;
                 this.show_dialog = isShow;
                 this.search_val = item.name;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
             },
 	    	handleChangeSearch(value,isShow){
@@ -334,14 +334,14 @@
             // 点击小图标
             clickRenderTable(){
                 this.show_dialog = false;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
             },
             // 点击回车
             handleEnterRenderTable(val){
                 this.show_dialog = false;
                 this.keyword = val;
-                this.queryParams = this.getQueryParams();
+                this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);               
             },
             overEdit(event){
