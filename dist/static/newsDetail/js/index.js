@@ -1,29 +1,35 @@
-            var len=50,
-            contentArr=[],
-            pageSize=0;
-            total_page=0,
-            textStr='',
-            dataRes=[],       
-            statusArr=[],
-            contentArr=[];            
-            function GetDateDiff(startDiffTime) {
-                var newTime = startDiffTime.substring(0,10).replace(/\./g, "/");
+            //初始化参数
+            function init(){
+                var obj={
+                    pageSize:0,
+                    textStr:'',
+                    dataRes:[],       
+                    statusArr:[],
+                    contentArr:[]
+                }
+                return obj;
+            }  
+            var obj=init();
+            //日期格式化
+            function getDateDiff(time) {
+                var newTime = time.substring(0,10).replace(/\./g, "/");
                 return newTime;    
             }; 
+            //文章折叠切换
             function showAll(){
+                var statusArr=obj.statusArr,
+                    contentArr=obj.contentArr,
+                    len=50;
                 $('ul#thelist').on('click','a.toggle',function () {
                 //点击按钮的时候改变开关的值
                 var liIndex=$(this).parents('li').index();
-                console.log(liIndex);
                  if(!statusArr[liIndex]){
                     //展开
                     $(this).parents('li').find('p.new_detial').html(contentArr[liIndex]);
                     $(this).html('<i class="iconfont icon_arrow">&#xe613;</i>');
-                    console.log('展开=>');
                     statusArr[liIndex]=true;
                  }else {
                      //收缩
-                    console.log('收缩=>');
                     var str = contentArr[liIndex].substring(0, len)+'...';
                     $(this).parents('li').find('p.new_detial').html(str);
                     $(this).html('<i class="iconfont icon_arrow">&#xe603;</i>');
@@ -31,13 +37,13 @@
                  }
              })
             }
+            //获取url参数
             function getUrlParams(name) { 
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //定义正则表达式 
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
                 var r = window.location.search.substr(1).match(reg);  
                 if (r != null) return unescape(r[2]); 
-               return null; 
+                return null; 
             }
-            var rptId=getUrlParams("id");
             // 上拉加载
             var dropload = $('#wrap').dropload({
                 scrollArea : window,
@@ -48,25 +54,28 @@
                     domNoData  : '<div class="dropload-noData">我也是有底线的</div>'
                 },
                 loadDownFn : function(me) {
-                    pageSize++;
-                    var htmlStr="";
+                    obj.pageSize++;
+                    var htmlStr="",rptId=getUrlParams("id"); 
                     $.ajax({  
                     contentType: "application/json;charset=UTF-8",
                     type: "POST",
                     url: "http://yuqing.zhidaohulian.com/report/get_rpt_dtl", 
-                    data: JSON.stringify({'rpt_id':rptId,'is_all':false,pageSize:pageSize}), 
+                    data: JSON.stringify({'rpt_id':rptId,'is_all':false,pageSize:obj.pageSize}), 
                     dataType: 'json',
                     success: function(data){ 
                         console.log(data);
-                        dataRes=data.result.data;
-                        total_page=data.result.total_page;
-                        var sectStr=""; 
-                        var arrLen = dataRes.length;
+                        obj.dataRes=data.result.data;
+                        var dataRes=obj.dataRes,
+                            textStr=obj.textStr,
+                            contentArr=obj.contentArr,
+                            sectStr="",
+                            arrLen = dataRes.length,
+                            len=50,
+                            newsTime=getDateDiff(data.result.time);
                         $('.new_heading').text(data.result.rpt_name);
-                        var newsTime=GetDateDiff(data.result.time);
                         $('.new_time').text(newsTime);
                         if(dataRes.length>0){
-                            for( var i=0;i<arrLen;i++){ 
+                            for(var i=0;i<arrLen;i++){ 
                                 textStr=dataRes[i].cont.replace(/\n/g,"<br>");
                                 contentArr.push(textStr);
                                 sectStr = textStr.substring(0, len)+'...';
@@ -75,17 +84,17 @@
                                     '<div class="new_content">'+
                                         '<div class="new_source clearfix">'+
                                             '<div class="new_item">'+
-                                                    '<img class="new_icon" src='+dataRes[i].source_img+'>'+
-                                                    '<span class="new_name">'+dataRes[i].source_title+'</span>'+
+                                                '<img class="new_icon" src='+dataRes[i].source_img+'>'+
+                                                '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
                                             '<a href='+ dataRes[i].source_url +' class="new_view" >查看来源</a>'+
                                         '</div>'+
                                         '<div class="new_img">'+
                                             '<img src='+dataRes[i].bgImg+'>'+
                                         '</div>'+
-                                        '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
-                                        '<p class="new_detial">'+sectStr+'</p>'+
-                                        '<a href="javascript:;" class="toggle"><i class="iconfont icon_arrow">&#xe603;</i></a>'+
+                                            '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
+                                            '<p class="new_detial">'+sectStr+'</p>'+
+                                            '<a href="javascript:;" class="toggle"><i class="iconfont icon_arrow">&#xe603;</i></a>'+
                                     '</div>'+
                                 '</li>';
                                 }else{
@@ -93,14 +102,14 @@
                                     '<div class="new_content">'+
                                         '<div class="new_source clearfix">'+
                                             '<div class="new_item">'+
-                                                    '<img class="new_icon" src='+dataRes[i].source_img+'>'+
-                                                    '<span class="new_name">'+dataRes[i].source_title+'</span>'+
+                                                '<img class="new_icon" src='+dataRes[i].source_img+'>'+
+                                                '<span class="new_name">'+dataRes[i].source_title+'</span>'+
                                             '</div>'+   
                                             '<a  href='+ dataRes[i].source_url +' class="new_view">查看来源</a>'+
                                         '</div>'+
-                                        '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
-                                        '<p class="new_detial">'+sectStr+'</p>'+
-                                        '<a href="javascript:;" class="toggle"><i class="iconfont icon_arrow">&#xe603;</i></a>'+
+                                            '<h2 class="new_title">'+dataRes[i].title+'</h2>'+
+                                            '<p class="new_detial">'+sectStr+'</p>'+
+                                            '<a href="javascript:;" class="toggle"><i class="iconfont icon_arrow">&#xe603;</i></a>'+
                                     '</div>'+
                                 '</li>';
                                 }
@@ -117,5 +126,5 @@
                     }
                   })
                 },
-                threshold : 50
+                threshold : 100
             });    

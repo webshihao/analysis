@@ -59,7 +59,7 @@
                 }
             },
             'search_val': throttle(function(newVal) { 
-                // 判断是否是keyup keydown还是手动输入  通过判断every 
+                // 判断是否是keyup keydown还是手动输入  通过判断every
                this.flag = this.search_arr.some((item)=>item.name == newVal);
                this.isChoose ? this.isSearch = false : this.isSearch = true;
                if(!this.flag){

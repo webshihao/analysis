@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 18:05:20
+* @Last Modified: 2018-06-14 14:17:57
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -29,6 +29,169 @@
     </div>    
     
 </template>
+<script>
+	import {
+		ajaxGet,
+		ajaxPost,
+		getStore,
+		setStore,
+        containEle
+	} from '@/util/util.js'
+	import DropdownItem from '@/components/dropItem.vue'
+	import SearchItem from '@/components/searchItem.vue'
+    import heartOn from 'static/img/heart_on.png'
+    import heartOff from 'static/img/heart_off.png'
+    import addReport from 'static/img/addReport.png'
+    import addReportImg from 'static/img/addReportImg.png'
+    import successImg from 'static/img/successImg.svg'
+    import delImg from 'static/img/delArticle.png'
+	export default {
+	    data() {
+	        return {
+    	        reportTitle: '',
+                articleList: [],
+                time: '',
+                delImg: delImg,
+                successImg: successImg,
+                items: [
+                    {title: 'sdfsdf',url: 'http://www.baidu.com'},
+                    {title: 'sdfsdssf',url: 'http://www.sogou.com'},
+                    {title: 'sdfssdssf',url: 'http://www.sina.com'},
+                    {title: 'sdfs2dssf',url: 'http://www.bilibili.com'}
+                ]
+	        }
+	    },
+	    components: {
+	    	DropdownItem,
+	    	SearchItem
+	    },
+	    created() {
+            const id = this.$route.query.id;
+	    	this.getReportData(id);
+            this.saveLoop()
+           
+	    },
+        watch: {
+
+            // before
+        },  
+        beforeRouteLeave(to,from,next){
+            clearTimeout(_timer);
+            next()
+        },
+	    methods: {
+            saveLoop(){
+                const that = this;
+                window._timer = null;
+                var test = (function f(){
+                    clearTimeout(_timer);
+                    _timer = setTimeout(function(){
+                        that.saveAjax(
+                            function(ret_code){
+                                if(ret_code == 0){
+                                    that.$message({
+                                        message: '自动保存成功',
+                                        type: 'success'
+                                    })
+                                }else{
+                                    that.$message.error('自动保存失败')
+                                }
+                            }
+                        );
+                        f();
+                    }, 1000*5*60);
+                })
+                test();
+            },
+	    	getReportData(id){
+                const url = '';
+                const params = {
+                    rpt_id: id,
+                    pageSize: 1,
+                    is_all: true
+                };
+                ajaxPost('/report/get_rpt_dtl',params).then((res)=>{
+                    const { ret_code,msg,result } = res.data;
+                    this.articleList = result.data;
+                    const timeArr = result.time.split(" ")[0].split(".");
+                    this.time = timeArr[0]+ '年' + timeArr[1] + '月' + timeArr[2] + '日';
+                    this.reportTitle = result.rpt_name;
+                });
+            },
+            delArticle(article,index){
+                this.$confirm('确认要删除这条信息吗？','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                }).then(()=>{
+                    this.articleList.splice(index,1);
+                    this.articleList.forEach((value,index)=>{
+                        value.rptOrder = index + 1;
+                    })
+                });
+                
+            },
+            sortList(){
+                this.articleList.sort(function(a,b){
+                    return a.rptOrder - b.rptOrder;
+                })
+
+            },
+            cancel(){
+                this.$confirm('是否确认取消报告','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    // type:'delImg',
+                }).then(()=>{
+                    this.$router.push({path: '/home/rptLst'});
+                });
+            },
+            saveAjax(callback){
+                // 把order调整顺序
+                this.articleList.forEach((item,index) => {
+                    item.rptOrder = index + 1;
+                });
+                const params = {
+                    rpt_id: this.$route.query.id,
+                    rpt_name: this.reportTitle,
+                    data: this.articleList
+                };
+                ajaxPost('/report/sav_rpt_dtl',params).then((res)=>{
+                    const {ret_code,msg,result} = res.data;
+                    callback(ret_code);
+                })
+            },
+            save(){
+                const that = this;
+                
+                this.saveAjax(function(ret_code){
+                    if(ret_code == 0){
+                        clearTimeout(_timer);
+                        that.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                        // that.saveLoop();
+                        that.$router.push({path: '/home/rptLst'})
+                    }else{
+                        that.$message.error('保存失败');
+                    }
+                }); 
+                
+            }
+	    },
+        mounted(){
+            this.$dragging.$on('dragged', ({ value }) => {
+                console.log(value)
+                value.list.forEach((item,index) => {
+                    item.rptOrder = index+1;
+                })
+            })
+            // this.isDrag=false;
+        }
+	}
+</script>
 
 <style scoped lang="less">
     .report_div {
@@ -131,174 +294,12 @@
             padding-right: 5%;
         }
     }
-	
+    .el-icon-warning:before{
+        content:""!important;
+         background: url('../../../static/img/del.png');
+    }
+    .dragging{
+         border: 1px dashed #333!important;
+    }
+    
 </style>
-<script>
-	import {
-		ajaxGet,
-		ajaxPost,
-		getStore,
-		setStore,
-        containEle
-	} from '@/util/util.js'
-	import DropdownItem from '@/components/dropItem.vue'
-	import SearchItem from '@/components/searchItem.vue'
-    import heartOn from 'static/img/heart_on.png'
-    import heartOff from 'static/img/heart_off.png'
-    import addReport from 'static/img/addReport.png'
-    import addReportImg from 'static/img/addReportImg.png'
-    import delImg from 'static/img/delArticle.png'
-	export default {
-	    data() {
-	        return {
-    	        reportTitle: '',
-                articleList: [],
-                time: '',
-                delImg: delImg,
-                items: [
-                    {title: 'sdfsdf',url: 'http://www.baidu.com'},
-                    {title: 'sdfsdssf',url: 'http://www.sogou.com'},
-                    {title: 'sdfssdssf',url: 'http://www.sina.com'},
-                    {title: 'sdfs2dssf',url: 'http://www.bilibili.com'}
-                ]
-	        }
-	    },
-	    components: {
-	    	DropdownItem,
-	    	SearchItem
-	    },
-	    created() {
-            const id = this.$route.query.id;
-	    	this.getReportData(id);
-            // window.onbeforeunload = function (e) {
-            //     if (BaikeNew.unloadNotCheck) return;
-            //     var msg = "您编辑的文章内容还没有保存！";
-            //     if (BaikeNew.isIe) {
-            //         window.event.returnValue = msg;
-            //     }
-            //     else {
-            //         return msg;
-            //     }
-            // }
-            this.saveLoop()
-           
-	    },
-        watch: {
-
-            // before
-        },  
-        beforeRouteLeave(to,from,next){
-            clearTimeout(_timer);
-            next()
-        },
-	    methods: {
-            saveLoop(){
-                const that = this;
-                window._timer = null;
-                var test = (function f(){
-                    clearTimeout(_timer);
-                    _timer = setTimeout(function(){
-                        that.saveAjax(
-                            function(ret_code){
-                                if(ret_code == 0){
-                                    that.$message({
-                                        message: '自动保存成功',
-                                        type: 'success'
-                                    })
-                                }else{
-                                    that.$message.error('自动保存失败')
-                                }
-                            }
-                        );
-                        f();
-                    }, 1000*5*60);
-                })
-                test();
-            },
-	    	getReportData(id){
-                const url = '';
-                const params = {
-                    rpt_id: id,
-                    pageSize: 1,
-                    is_all: true
-                };
-                ajaxPost('/report/get_rpt_dtl',params).then((res)=>{
-                    const { ret_code,msg,result } = res.data;
-                    this.articleList = result.data;
-                    const timeArr = result.time.split(" ")[0].split(".");
-                    this.time = timeArr[0]+ '年' + timeArr[1] + '月' + timeArr[2] + '日';
-                    this.reportTitle = result.rpt_name;
-                });
-            },
-            delArticle(article,index){
-                this.$confirm('确认要删除这条信息吗？','提示',{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(()=>{
-                    this.articleList.splice(index,1);
-                    this.articleList.forEach((value,index)=>{
-                        value.rptOrder = index + 1;
-                    })
-                });
-                
-            },
-            sortList(){
-                this.articleList.sort(function(a,b){
-                    return a.rptOrder - b.rptOrder;
-                })
-
-            },
-            cancel(){
-                this.$confirm('是否确认取消报告','提示',{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(()=>{
-                    this.$router.push({path: '/home/rptLst'});
-                });
-            },
-            saveAjax(callback){
-                // 把order调整顺序
-                this.articleList.forEach((item,index) => {
-                    item.rptOrder = index + 1;
-                });
-                const params = {
-                    rpt_id: this.$route.query.id,
-                    rpt_name: this.reportTitle,
-                    data: this.articleList
-                };
-                ajaxPost('/report/sav_rpt_dtl',params).then((res)=>{
-                    const {ret_code,msg,result} = res.data;
-                    callback(ret_code);
-                })
-            },
-            save(){
-                const that = this;
-                
-                this.saveAjax(function(ret_code){
-                    if(ret_code == 0){
-                        clearTimeout(_timer);
-                        that.$message({
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                        // that.saveLoop();
-                        that.$router.push({path: '/home/rptLst'})
-                    }else{
-                        that.$message.error('保存失败');
-                    }
-                }); 
-                
-            }
-	    },
-        mounted(){
-            this.$dragging.$on('dragged', ({ value }) => {
-                console.log(value)
-                value.list.forEach((item,index) => {
-                    item.rptOrder = index+1;
-                })
-            })
-        }
-	}
-</script>
