@@ -14,7 +14,7 @@
         <div class="report_div">
             <input v-model="reportTitle" class="reportTitle" placeholder="请输入内容"/>
             <h2 class="time_h2">{{time}}</h2>
-            <div class="cont_wrap" v-for="(article,index) in articleList" v-dragging="{item: article,list: articleList,group: 'article'}" :key="article.title" :class="{show_border:isDrag}">
+            <div class="cont_wrap" v-for="(article,index) in articleList" v-dragging="{item: article,list: articleList,group: 'article'}" :key="article.title">
                 <input class="cont_num" disabled="true" type="text" v-model="article.rptOrder" @blur="sortList"><input class="title_input" v-model="article.title" disabled="true" /><img class="delImg" :src="delImg" @click="delArticle(article,index)" alt=""><textarea :class="{allWidth: !article.bgImg}" name="" id="" cols="30" rows="10" v-model="article.cont"></textarea><img v-if="article.bgImg" :src="article.bgImg" class="bg_img" alt="">
             </div>
             
@@ -49,7 +49,6 @@
 	        return {
     	        reportTitle: '',
                 articleList: [],
-                isDrag:false,
                 time: '',
                 delImg: delImg,
                 items: [
@@ -182,7 +181,6 @@
 	    },
         mounted(){
             this.$dragging.$on('dragged', ({ value }) => {
-                this.isDrag=true;
                 value.list.forEach((item,index) => {
                     item.rptOrder = index+1;
                 })
@@ -280,9 +278,6 @@
         }
         
     }
-    .show_border{
-        border: 1px dashed #333;
-    }
     .btn_wrap {
         text-align: right;
         position: fixed;
@@ -297,7 +292,11 @@
         }
     }
     .el-icon-warning:before{
-         background: url('');
+        content:""!important;
+         background: url('../../../static/img/del.png');
+    }
+    .dragging{
+         border: 1px dashed #333!important;
     }
     
 </style>
