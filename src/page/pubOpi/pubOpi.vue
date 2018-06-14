@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 10:11:47
+* @Last Modified: 2018-06-14 10:41:49
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -89,6 +89,7 @@
     		    <el-table-column
     		      label="标题"
     		      align="left"
+                  show-overflow-tooltip
     		      prop="title">
                     <template slot-scope="scope">
                       <a
@@ -129,9 +130,9 @@
     		      width="150"
     		      prop="desc">
                     <template slot-scope="scope">
-                        <el-row>
-                            <img @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 1 ? heartOn : heartOff " alt="">
-                            <img @click="handleReport(scope.$index,scope.row)" :src="addReport" class="edit_img" alt="">
+                        <el-row class="imgWrap">
+                            <img @mouseover="overHeart($event)" @mouseout="outHeart($event)" @click="handleCollect(scope.$index,scope.row)" :src=" scope.row.opr_id == 1 ? heartOn : heartOff " alt="">
+                            <img @mouseover="overReport($event)" @mouseout="outReport($event)" @click="handleReport(scope.$index,scope.row)" :src="addReport" class="edit_img" alt="">
                         </el-row>
                         
                     </template>
@@ -195,12 +196,22 @@
 					color: #f00;
 				}
 			}
-            .edit_img {
-                position: relative;
-                top: 1px;
-                margin-left:10px;
+            .imgWrap {
+                img {
+                    cursor: pointer;
+                    position: relative;
+                    top: 4px;
+                    &.edit_img {
+                        position: relative;
+                        margin-left:10px;
+                    }
+                }
             }
+
+            
             .demo-table-expand {
+                text-align: left !important;
+                color: #333;
                 .el-form-item {
                     margin-top: 0;
                     margin-bottom: 0;
@@ -236,7 +247,7 @@
 		}
         .reportWrap {
             height: 226px;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
         .reportlist_div {
             cursor: pointer;
@@ -286,9 +297,11 @@
 	import DropdownItem from '@/components/dropItem.vue'
     import SearchItem from '@/components/searchItem.vue'
 	import Pagination from '@/components/pagination.vue'
-    import heartOn from 'static/img/heart_on.png'
-    import heartOff from 'static/img/heart_off.png'
-    import addReport from 'static/img/addReport.png'
+    import heartOn from 'static/img/heart_on.svg'
+    import heartHover from 'static/img/heart_hover.svg'
+    import heartOff from 'static/img/heart_off.svg'
+    import addReport from 'static/img/addReport.svg'
+    import addReportHover from 'static/img/addReportHover.svg'
     import addReportImg from 'static/img/addReportImg.png'
 	export default {
 	    data() {
@@ -343,7 +356,9 @@
                 tableData: [],
                 heartOff: heartOff,
                 heartOn: heartOn,
+                heartHover: heartHover,
                 addReport: addReport,
+                addReportHover: addReportHover,
                 addReportImg: addReportImg,
                 dialogVisible: false,
                 reportList: [],
@@ -668,6 +683,20 @@
                 this.keyword = val;
                 this.queryParams = this.getQueryParams();
                 this.getDataTable(this.queryParams);               
+            },
+            overHeart(event){
+                if(event.target.src == this.heartOn) return;
+                event.target.src = this.heartHover;
+            },
+            outHeart(event){
+                if(event.target.src == this.heartOn) return;
+                event.target.src = this.heartOff;
+            },
+            overReport(event){
+                event.target.src = this.addReportHover;
+            },
+            outReport(event){
+                event.target.src = this.addReport;
             }
 	    },
         mounted(){

@@ -12,6 +12,8 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
+let WebpackZipPlugin =require('webpack-zip-plugin')
+
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -40,6 +42,11 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true
+    }),
+    new WebpackZipPlugin({
+        initialFile: './dist',  //需要打包的文件夹(一般为dist)
+        endPath: './',  //打包到对应目录（一般为当前目录'./'）
+        zipName: 'operation.zip' //打包生成的文件名
     }),
     // extract css into its own file
     new ExtractTextPlugin({

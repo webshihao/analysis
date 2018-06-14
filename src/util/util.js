@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:00:50
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 18:09:02
+* @Last Modified: 2018-06-13 17:36:40
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -44,7 +44,7 @@ export const ajaxGet = (url,query) => {
 }
 
 /**
- * 设置localstorage,
+ * 设置sessionstorage,
  * @param {*} name  存储名称
  * @param {*} content  存储的值，不需要json 化
  */
@@ -69,6 +69,33 @@ export const getStore = name => {
 export const removeStore = name => {
     if (!name) return;
     return window.sessionStorage.removeItem(name);
+}
+/**
+ * 设置localstorage,
+ * @param {*} name  存储名称
+ * @param {*} content  存储的值，不需要json 化
+ */
+export const setLocal = (name, content) => {
+    if (!name) return;
+    if (typeof content !== 'string') {
+        content = JSON.stringify(content);
+    }
+    window.localStorage.setItem(name, content);
+}
+
+/**
+ * 获取localStorage
+ */
+export const getLocal = name => {
+    if (!name) return;
+    return window.localStorage.getItem(name);
+}
+/**
+ * 删除localStorage
+ */
+export const removeLocal = name => {
+    if (!name) return;
+    return window.localStorage.removeItem(name);
 }
 
 /**

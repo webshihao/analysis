@@ -134,5 +134,12 @@ ul li .icon_arrow{
 　　clear:both;
 }
 
-
+a.new_view:hover {
+	text-decoration: none;
+	color: #328BFF;
+	cursor: pointer;
+}
+a:hover {
+	text-decoration: none;
+}
 

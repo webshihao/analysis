@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>下展开</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-391.000000, -272.000000)">
+            <g id="Group-11" transform="translate(113.000000, 252.000000)">
+                <g id="Group-9">
+                    <g id="Group-10" transform="translate(278.000000, 20.000000)">
+                        <rect id="Rectangle-19" fill="#fff" opacity="0" x="0" y="0" width="24" height="24"></rect>
+                        <path d="M12.6331797,14.0781345 L15.4981381,10.6401844 C15.8517021,10.2159075 15.7943781,9.5853428 15.3701012,9.23177872 C15.1903862,9.08201622 14.9638533,9 14.7299168,9 L9,9 C8.44771525,9 8,9.44771525 8,10 C8,10.2339365 8.08201622,10.4604694 8.23177872,10.6401844 L11.0967371,14.0781345 C11.4503012,14.5024114 12.0808659,14.5597354 12.5051428,14.2061713 C12.5516059,14.1674521 12.5944604,14.1245975 12.6331797,14.0781345 Z" id="Oval-4" fill="#fff"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

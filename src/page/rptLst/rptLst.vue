@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:37:19
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 10:15:16
+* @Last Modified: 2018-06-14 11:12:07
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -75,7 +75,7 @@
     		      prop="desc">
                     <template slot-scope="scope">
                         <el-row>
-                             <img @click="handleEdit(scope.$index,scope.row)" :src="edit"  alt="">
+                            <img @mouseover="overEdit($event)" @mouseout="outEdit($event)" @click="handleEdit(scope.$index,scope.row)" :src="scope.row.isTimeout == false ? edit : editOff" alt="">
                             <img @click="handleDel(scope.$index,scope.row)" :src="del" class="edit_btn" alt="">
                         </el-row>
                     </template>
@@ -121,7 +121,9 @@
 	import SearchItem from '@/components/searchItem.vue'
     import Pagination from '@/components/pagination.vue'
     import editable from 'static/img/editable.png'
-    import edit from 'static/img/edit.png'
+    import edit from 'static/img/edit.svg'
+    import editOff from 'static/img/editOff.svg'
+    import hoverEdit from 'static/img/hoverEdit.svg'
     import del from 'static/img/delArticle.png'
 	export default {
 	    data() {
@@ -173,6 +175,8 @@
                 iscloseDialog: false,
                 isTipVisible:false,
                 edit:edit,
+                editOff:editOff,
+                hoverEdit:hoverEdit,
                 del:del,
                 editable:editable,
                 queryParams: {
@@ -339,6 +343,14 @@
                 this.keyword = val;
                 this.queryParams = this.getQueryParams();
                 this.getDataTable(this.queryParams);               
+            },
+            overEdit(event){
+                if(event.target.src == this.editOff) return;
+                event.target.src = this.hoverEdit;
+            },
+            outEdit(event){
+                if(event.target.src == this.editOff) return;
+                event.target.src = this.edit;
             }
 	    },
         mounted(){

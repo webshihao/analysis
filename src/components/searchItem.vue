@@ -185,6 +185,7 @@
                 }
             }
             .clear {
+                cursor: pointer;
                 position: absolute;
                 bottom: 6px;
                 left: 13px;

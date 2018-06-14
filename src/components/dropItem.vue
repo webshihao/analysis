@@ -249,6 +249,10 @@
                 color:#606060;
                 border: 1px dotted #F5F5F5;
                 padding:0 10px 0 8px;
+                &:hover {
+                    background: #f5f5f5;
+                    cursor: pointer;
+                }
             }
             .drop-group-name{
                 padding:0 10px 0 8px;

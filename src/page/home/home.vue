@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:35:42
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-07 09:58:42
+* @Last Modified: 2018-06-13 17:38:21
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -17,7 +17,14 @@
 			@handlerTopNav="triggerTopNav"
 	    >
 	    	<h2 class="header_logo" slot="logo">舆情分析</h2>
-	    	<p class="header_info" slot="info">{{username}}</p>
+	    	<div class="header_info" slot="info">
+	    		<p class="text">{{username}}</p>
+	    		<img class="arrowdown" src="../../../static/img/arrowdown_white.svg" alt="">
+	    		<ul>
+	    			<li @click="exit">退出</li>
+	    		</ul>
+	    	</div>
+
 	    </my-header>
 	    <router-view></router-view>
 	    
@@ -36,11 +43,43 @@
 		font-size: 16px;
 	}
 	.header_info {
+		cursor: pointer;
 		margin-left: auto;
-	    color: #fff;
-	    padding-right: 30px;
+	    padding-right: 50px;
 	    font-size: 16px;
 	    line-height: 55px;
+	    position: relative;
+	    &:hover {
+	    	ul {
+	    		display: block;
+	    	}
+	    }
+		.text { 
+	    	color: #fff;
+			margin-right: 28px;
+		}
+	    .arrowdown {
+	    	position: absolute;
+	    	top: 16px;
+	    	right: 50px;
+
+	    }
+	    ul {
+	    	background: #2e3254;
+    	    width: 100px;
+    	    height: 40px;
+    	    line-height: 40px;
+    	    position: absolute;
+    	    color: #fff;
+    	    top: 55px;
+    	    right: 53px;
+    	    z-index: 1000;
+    	    display: none;
+    	    li {
+    	    	cursor: pointer;
+    	    }
+	    }
+
 	}
 	
 </style>
@@ -49,7 +88,11 @@
 		ajaxGet,
 		ajaxPost,
 		getStore,
-		setStore
+		setStore,
+		getLocal,
+		setLocal,
+		removeLocal,
+		delCookie
 	} from '@/util/util.js'
 	import MyHeader from '@/components/myHeader.vue'
 	export default {
@@ -81,7 +124,10 @@
 	    		this.counter = index;
 	    		setStore('nav_index',index);
 	    	},
-	    	
+	    	exit(){
+	    		delCookie('user_cookie');
+	    		this.$router.push({path: '/'});
+	    	}
 	    }
 	}
 </script>

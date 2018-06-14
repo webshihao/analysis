@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-17 17:41:39
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-12 18:14:27
+* @Last Modified: 2018-06-13 17:53:51
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -215,6 +215,9 @@
 		getCookie,
 		setCookie,
 		delCookie,
+		getLocal,
+		setLocal,
+		removeLocal,
 		removeStore
 	} from '@/util/util.js'
 	export default {
@@ -236,8 +239,9 @@
 	    components: {
 	    },
 	    created() {
-	    	if(getStore('password')){
-	    		this.password = getStore('password');
+	    	if(getLocal('password')){
+	    		this.is_save_userinfo = true;
+	    		this.password = getLocal('password');
 	    	}
 	    	removeStore('nav_index');
 	    	this.setImg();
@@ -285,18 +289,15 @@
 	    	// 记住密码
 	    	change_save(){
 	    		this.is_save_userinfo = !this.is_save_userinfo;
-	    		setStore('password',this.password);
+	    		if(this.is_save_userinfo){
+	    			setLocal('password',this.password);
+	    		}else{
+	    			removeLocal('password');
+	    		}
+	    		
 	    	},
 	    	addColor(index){
 	    		this.isActive = index;
-	    		// event.preventDefault();
-	    		// event.stopPropagation();
-	    		// // 将所有的color还原
-	    		// const allDOM = document.getElementsByClassName('input_box');
-	    		// for(var i=0;i<allDOM.length;i++){
-	    		// 	allDOM[i].style.borderBottomColor = '#dbdbdb';
-	    		// }
-	    		// event.target.parentElement.style.borderBottomColor = '#2ED3A8';
 	    	}
 	    }
 	}

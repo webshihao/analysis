@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 10:06:34
+* @Last Modified: 2018-06-13 18:05:20
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -294,6 +294,7 @@
 	    },
         mounted(){
             this.$dragging.$on('dragged', ({ value }) => {
+                console.log(value)
                 value.list.forEach((item,index) => {
                     item.rptOrder = index+1;
                 })
