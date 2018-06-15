@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-17 17:41:39
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-13 17:53:51
+* @Last Modified: 2018-06-15 10:47:49
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -247,6 +247,7 @@
 	    	this.setImg();
 	    },
 	    mounted(){
+	    	// 获取视窗高度
 	    	this.$nextTick(()=>{
 	    	    let height = document.body.clientHeight;
 	    	    document.getElementById('container').style.height = height + 'px';

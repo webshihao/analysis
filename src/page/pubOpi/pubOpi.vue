@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-14 16:47:51
+* @Last Modified: 2018-06-15 10:27:43
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -371,16 +371,7 @@
                 page_num: 1,
                 total_num: 0,
                 isChecked: false,
-                queryParams: {
-                    // "data_start": "20180501",
-                    // "data_end": "20180503",
-                    // "page_num": 1,   //当前页面
-                    // "cmp_id":1,        //竞品
-                    // "media_id":1,          //媒体类型
-                    // "opr_id":1,        //是否收藏
-                    // "keywd":"车机"
-
-                }
+                queryParams: {}
 	        }
 	    },
 	    components: {
@@ -395,7 +386,6 @@
 	    	// 默认日期为今天
 	    	this.dateArr = [this.getPrevDate(),this.getCurDate()];
 	    	Promise.all([p1,p2,p3]).then((res)=>{
-                // console.log(res,1);
                 this.queryParams = this.getQueryParams();
 	    		this.getDataTable(this.queryParams);
 	    	})
@@ -486,8 +476,9 @@
                 this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
 	    	},
+            // isShow为是否展示下拉框
 	    	handleChangeSearch(value,isShow){
-                // debugger
+                // 这样写为了防止给后端传undefined
                 this.keyword = !!value ? value : '';  
                 this.show_dialog = isShow; 
                 const params = {
@@ -507,8 +498,6 @@
                 // }
             },
             handleChangeCommandRoot(item,index,isShow){
-                // debugger
-                // console.log(item,index,123123);
                 this.keyword = item.name;
                 this.show_dialog = isShow;
                 this.search_val = item.name;
@@ -519,15 +508,6 @@
 	    	getDataTable(params){
 
 	    		const url = '/yuqing/get_opi_list';
-	    		// const params = {
-	    		// 	data_start: this.dateArr[0],
-	    		// 	data_end: this.dateArr[1],
-	    		// 	page_num: 1,
-	    		// 	cpm_id: this.competitiveObj.id,
-	    		// 	media_id: this.mediaObj.id,
-	    		// 	opr_id: this.collectionObj.id,
-	    		// 	keywd: ''
-	    		// };
 	    		ajaxPost(url,params).then((res)=>{
 	    			const {ret_code,msg,result} = res.data;
                     if(ret_code == 0){

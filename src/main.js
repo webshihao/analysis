@@ -6,7 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui';
 import { getCookie, setCookie, delCookie } from './util/util'
 import './assets/theme.scss';
-// 没有token就会到login
+// 必须让用户从登陆页开始进 前端模拟token验证
 router.beforeEach((to, from, next) => {
     let token = getCookie('user_cookie');
     if (!token && to.path != '/login') {
@@ -16,7 +16,6 @@ router.beforeEach((to, from, next) => {
     }
    
 })
-// import 'element-ui/lib/theme-chalk/index.css';
 import VueDND from 'awe-dnd'
 Vue.config.productionTip = false
 Vue.use(ElementUI)

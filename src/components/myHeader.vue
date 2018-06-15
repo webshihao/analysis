@@ -69,13 +69,14 @@
                 type: Number,
                 default: 0
             },
+            // 根路径
             defaultRoot: {
                 type: String,
                 default: 'home'
             }
         },
         data(){
-        return {
+            return {
                 
             }
         },

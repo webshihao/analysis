@@ -43,12 +43,12 @@
         data(){
             return {
                 search_val: '',
-                // 三种状态
+                // 三种状态控制下拉框显示隐藏
                 isClick: true,    //点击div
                 isSearch: false,  //搜索
                 isChoose: false,  //点击li
-                now: -1,
-                flag:false
+                now: -1,          //下拉框当前索引
+                flag:false        //false为用户手动输入搜索 true为keydown  keyup键盘事件
             }
         },
         watch:{
@@ -59,11 +59,14 @@
                 }
             },
             'search_val': throttle(function(newVal) { 
-                // 判断是否是keyup keydown还是手动输入  通过判断every
+                // 判断是否是keyup keydown还是手动输入  就看inputval 是否有下拉中的data
                this.flag = this.search_arr.some((item)=>item.name == newVal);
+               // 用户手动输入时isChoose为false isSearch为true  
                this.isChoose ? this.isSearch = false : this.isSearch = true;
                if(!this.flag){
-                this.$emit('changeSearch',newVal.toLowerCase(), this.isSearch);
+                // 暂时都穿true  让下拉框打开  之前是穿的 isSearch 动作
+                // this.$emit('changeSearch',newVal.toLowerCase(), this.isSearch);
+                this.$emit('changeSearch',newVal.toLowerCase(), true);
                }
             }, 500),
 
@@ -75,7 +78,9 @@
                if(event.target.nodeName == 'INPUT'){
                    this.isChoose = false;
                    this.isSearch = false;
-                   this.$emit('changeSearch',this.search_val,this.isClick);
+                   // 暂时都穿true  让下拉框打开  之前是穿的 isClick 动作
+                   // this.$emit('changeSearch',this.search_val,this.isClick);
+                   this.$emit('changeSearch',this.search_val,true);
                }
            },
            selectDown() {

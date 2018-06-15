@@ -2,7 +2,7 @@
 * @Created Date:   2018-05-21 10:36:17
 * @Author: yiche
 * ------
-* @Last Modified: 2018-06-14 14:17:57
+* @Last Modified: 2018-06-15 10:49:14
 * @Modified by:   huke
 * ------
 * Copyright (c) 2018 易车
@@ -75,6 +75,7 @@
 
             // before
         },  
+        // 退出时清除定时器
         beforeRouteLeave(to,from,next){
             clearTimeout(_timer);
             next()
