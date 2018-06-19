@@ -20,7 +20,7 @@
             			      range-separator="至"
             			      start-placeholder="开始日期"
             			      end-placeholder="结束日期"
-                              :default-time="['', '']"
+                              :default-value="timeDefaultShow"
             			      :picker-options="pickerOptions">
             			</el-date-picker>
         		</el-form-item>
@@ -128,10 +128,10 @@
 	export default {
 	    data() {
 	        return {
-    	        dateArr: ["",""],
+    	        dateArr: [],
     	        pickerOptions: {
-                  disabledDate(time) {
-                    return time.getTime() > Date.now() - 86400000;
+                  disabledDate: time =>{
+                    return (time).getTime() > Date.now()-86400; 
                   },
                   shortcuts: [{
                     text: '今天',
@@ -179,6 +179,7 @@
                 hoverEdit:hoverEdit,
                 del:del,
                 editable:editable,
+                timeDefaultShow:'',
                 queryParams: {
                 }
 	        }
@@ -190,13 +191,14 @@
 	    },
 	    created() {
 	    	// 默认日期为今天
-	    	this.dateArr = ["",""];
+            this.timeDefaultShow = new Date();
+            this.timeDefaultShow.setMonth(new Date().getMonth() - 1);
+	    	this.dateArr = ['',''];
             this.queryParams = this.getQueryParams();
             this.getDataTable(this.queryParams);
 	    },
         watch: {
             'dateArr'(newVal,oldVal){
-                // debugger
                 //首次加载时间时拿不到其他的query  所以不发table请求 
                 if(oldVal.length != 2){
                     return;
@@ -209,13 +211,17 @@
                 if(newVal[0]!="" && newVal[1]!=""){
                     this.dateArr[0] = this.timestampToTime(newVal[0]); 
                     this.dateArr[1] = this.timestampToTime(newVal[1]);
-                    console.log('this.dateArr=>',this.dateArr)
                 }
                 this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
+                // this.dateArr = [this.getPrevDate(),this.getCurDate()];
             }
         },   
 	    methods: {
+            getPrevDate(){
+                const customDate = new Date().getTime() - 3600 * 1000 * 24 * 30;
+                return new Date(customDate).getFullYear().toString() + (new Date(customDate).getMonth() + 1).toString().padStart(2,"0") + new Date(customDate).getDate().toString().padStart(2,"0");
+            },
             checkMsg(str) {
                 this.$message({
                   type: 'warning',

@@ -176,116 +176,7 @@
     </div>
 </template>
 
-<style scoped lang="less">
-	.search_div {
-		z-index: 9999;
-	}
-	.query_condition {
-		height: 88px;
-		background: #fff;
-		.el-form-item {
-			margin-top: 20px;
-		}
-		#table_wrap {
-			margin: 0 50px;
-			.table_p {
-				height: 56px;
-				line-height: 56px;
-				text-align: left;
-				b {
-					color: #f00;
-				}
-			}
-            .imgWrap {
-                img {
-                    cursor: pointer;
-                    position: relative;
-                    top: 4px;
-                    &.edit_img {
-                        position: relative;
-                        margin-left:10px;
-                    }
-                }
-            }
 
-            
-            .demo-table-expand {
-                text-align: left !important;
-                color: #333;
-                .el-form-item {
-                    margin-top: 0;
-                    margin-bottom: 0;
-                    .el-form-item__content {
-                        line-height: 30px;
-                    }
-                }
-                
-            }
-            .el-table__body-wrapper {
-                .el-table__row {
-                    .cell {
-                        a {
-                            
-                            &:link {
-                                color: #333;
-                            }
-                            &:visited {
-                                color: #8e8e8e!important;
-                            }
-                            &:hover {
-                                color: #328BFF;
-                                text-decoration: underline;
-                            }
-                            &:active {
-                                color: #f00;
-                            }
-                        }
-                    }
-                }
-            }
-            
-		}
-        .reportWrap {
-            height: 226px;
-            overflow-y: auto;
-        }
-        .reportlist_div {
-            cursor: pointer;
-            height: 45px;
-            line-height: 45px;
-            color: #333;
-            &:hover {
-                color: #328BFF;
-                background: #F8FCFF;
-            }
-            &.checked {
-                color: #999;
-            }
-            span {
-                display: inline-block;
-            }
-            img {
-                width: 24px;
-                height: 24px;
-                display: inline-block;
-                vertical-align: middle;
-            }
-        }
-        .button-new-tag {
-            margin-left: 10px;
-            height: 32px;
-            line-height: 30px;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-        .input-new-tag {
-            width: 90px;
-            margin-left: 10px;
-            vertical-align: bottom;
-        }
-	}
-    
-</style>
 <script>
 	import {
 		ajaxGet,
@@ -309,12 +200,6 @@
     	        dateArr: [],
     	        pickerOptions: {
                      disabledDate(time) {
-                        // const end = new Date();
-                        // const start = new Date();
-                        // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                        // // return time.getTime() > Date.now() - 8.64e6;
-                        // return [start,end]
-                        // return time.getTime() < this.start;    
                   },
                   shortcuts: [{
                     text: '今天',
@@ -694,3 +579,113 @@
         }
 	}
 </script>
+<style scoped lang="less">
+    .search_div {
+        z-index: 9999;
+    }
+    .query_condition {
+        height: 88px;
+        background: #fff;
+        .el-form-item {
+            margin-top: 20px;
+        }
+        #table_wrap {
+            margin: 0 50px;
+            .table_p {
+                height: 56px;
+                line-height: 56px;
+                text-align: left;
+                b {
+                    color: #f00;
+                }
+            }
+            .imgWrap {
+                img {
+                    cursor: pointer;
+                    position: relative;
+                    top: 4px;
+                    &.edit_img {
+                        position: relative;
+                        margin-left:10px;
+                    }
+                }
+            }
+
+            
+            .demo-table-expand {
+                text-align: left !important;
+                color: #333;
+                .el-form-item {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    .el-form-item__content {
+                        line-height: 30px;
+                    }
+                }
+                
+            }
+            .el-table__body-wrapper {
+                .el-table__row {
+                    .cell {
+                        a {
+                            
+                            &:link {
+                                color: #333;
+                            }
+                            &:visited {
+                                color: #8e8e8e!important;
+                            }
+                            &:hover {
+                                color: #328BFF;
+                                text-decoration: underline;
+                            }
+                            &:active {
+                                color: #f00;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        .reportWrap {
+            height: 226px;
+            overflow-y: auto;
+        }
+        .reportlist_div {
+            cursor: pointer;
+            height: 45px;
+            line-height: 45px;
+            color: #333;
+            &:hover {
+                color: #328BFF;
+                background: #F8FCFF;
+            }
+            &.checked {
+                color: #999;
+            }
+            span {
+                display: inline-block;
+            }
+            img {
+                width: 24px;
+                height: 24px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+        .button-new-tag {
+            margin-left: 10px;
+            height: 32px;
+            line-height: 30px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .input-new-tag {
+            width: 90px;
+            margin-left: 10px;
+            vertical-align: bottom;
+        }
+    }
+    
+</style>
