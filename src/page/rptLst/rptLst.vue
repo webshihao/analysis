@@ -131,7 +131,7 @@
     	        dateArr: [],
     	        pickerOptions: {
                   disabledDate: time =>{
-                    return (time).getTime() > Date.now()-86400; 
+                    return time.getTime() > Date.now()-86400; 
                   },
                   shortcuts: [{
                     text: '今天',
