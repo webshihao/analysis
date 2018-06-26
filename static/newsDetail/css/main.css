@@ -104,6 +104,8 @@ ul p.new_detial {
 	font-size: 0.426667rem;
 	letter-spacing: 0;
 	text-align: justify;
+	overflow: hidden;
+    word-break: break-all;
 }
 ul p.new_detial img{
 	width: 100%;
