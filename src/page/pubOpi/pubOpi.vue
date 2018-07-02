@@ -32,21 +32,21 @@
     		
     		<el-form-item>
     			<dropdownItem
-    			    :dropName="collectionObj.name"
+    			    :dropName="collectionObj.id!=0?collectionObj.name:'操作'"
     			    :dropdownItemData="collectionGroup" 
     			    @dropItemClick="clickCollection"
     			></dropdownItem>
     		</el-form-item>
     		<el-form-item>
     			<dropdownItem
-    			    :dropName="competitiveObj.name"
+    			    :dropName="competitiveObj.id!=0?competitiveObj.name:'竞品'"
     			    :dropdownItemData="competitiveGroup" 
     			    @dropItemClick="clickCompetitive"
     			></dropdownItem>
     		</el-form-item>
     		<el-form-item>
     			<dropdownItem
-    			    :dropName="mediaObj.name"
+    			    :dropName="mediaObj.id!=0?mediaObj.name:'媒体类型'"
     			    :dropdownItemData="mediaGroup" 
     			    @dropItemClick="clickMedia"
     			></dropdownItem>
@@ -257,7 +257,8 @@
                 page_num: 1,
                 total_num: 0,
                 isChecked: false,
-                queryParams: {}
+                queryParams: {},
+                show_Index:-1
 	        }
 	    },
 	    components: {
@@ -327,6 +328,7 @@
                         const {ret_code,msg,result} = res.data;
                         this.collectionGroup = result.data;
                         this.collectionObj = this.collectionGroup[0];
+                        console.log('this.collectionObj=>',this.collectionObj)
                         return this.collectionObj;
                     }else{
                         this.$message.error(msg);
@@ -348,12 +350,13 @@
 	    		})
 	    	},
 	    	clickCollection(item){
-	    		this.collectionObj = item;
+	    		     this.collectionObj = item;
                 this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
 	    	},
 	    	clickCompetitive(item){
 	    		this.competitiveObj = item;
+          console.log('this.collectionObj=>',this.collectionObj,'item=>',item);
                 this.queryParams = this.getQueryParams(true);
                 this.getDataTable(this.queryParams);
 	    	},

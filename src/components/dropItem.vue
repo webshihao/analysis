@@ -93,6 +93,236 @@
         </div> 
     </div>
 </template>
+
+<script>
+import { throttle, ajaxPost, containEle} from '@/util/util.js'
+
+export default {
+    name: 'dropdownitem',
+    data() {
+        let drop_name = this.dropName;
+        return {
+            dropNameText: drop_name,
+            iconTrigger: true,
+            highlightedIndex: -1,
+            suggestionLists: this.dropdownItemData,
+            isOnComposition: false,
+            isFocus: false,
+            loading: false,
+            dataFromFather: this.dropdownItemData,
+            searchName: '',
+            isClickChange: false,
+            // 切换下拉状态
+            toggleDropState: true,
+            isShowContent: false,
+            // 是否添加旋转class
+            isRotate: false
+        }
+    },
+    props: {
+        // 父级是否可以选
+        isTitleClick: {
+            type: Boolean,
+            default: true
+        },
+        showSearch: {
+            type: Boolean,
+            default: false
+        },
+        searchType: {
+            type: String,
+            default: "serial"
+        },
+        isSelect: {
+            type: Boolean,
+            default: true
+        },
+        dropName: {
+            type: String,
+            default: "不限级别"
+        },
+        menuAlign: {
+            type: String,
+            default: 'start'
+        },
+        // 上部宽高样式
+        linkStyle: {
+            type: Object,
+            default: function() {
+                return {}
+            }
+        },
+        // 下拉框宽高样式
+        groupStyle: {
+            type: Object,
+            default: function() {
+                return {}
+            }
+        },
+        dropdownItemData: {
+            type: Array,
+            default: function() {
+                return []
+            }
+        },
+        dropdownItemGroupData: {
+            type: Array,
+            default: function() {
+                return []
+            }
+        },
+        // 回显当前dropdown-item 一级和二级索引
+        highlightIndex:{
+
+        },
+        highlightIndexParent:{
+
+        }
+    },
+    watch: {
+        'searchName': throttle(function(newVal) { this.handleSearchChange(newVal) }, 500),
+        'dropdownItemData': function(newValue) {
+            this.dataFromFather = newValue;
+        },
+        'dropName':function(newValue){
+            this.dropNameText = newValue;
+        },
+        'dropdownItemGroupData':function(newVal){
+        },
+        'isShowContent'(newVal){
+            if(!newVal){
+                this.isRotate = false;
+            }
+        }
+    },
+    mounted() {
+        document.addEventListener('click',(e)=>{
+            if (!containEle(this.$el, e.target)) {
+                this.isShowContent = false;
+            }
+        })
+        document.getElementsByClassName("maste")[0].click = function() {
+            return false;
+        }
+    },
+    methods: {
+        // 选中某项后执行回调(将dropdown-item值传入)
+        handleCommand(command) {
+            if(command.id){
+              this.dropNameText = command.name;
+            }
+            console.log('command=>',command)
+            this.$emit("dropItemClick", command);
+            this.isShowContent = false;
+        },
+        clickSelect(e) {
+            this.isRotate = true;
+            // this.isClickChange = true;
+            this.isShowContent = !this.isShowContent;
+            console.log(this.isShowContent);
+
+            if(this.isShowContent){
+                this.$emit('triggerInput', true);
+            }
+            // e.stopPropagation();
+            return false;
+        },
+        getitem(item, index) {
+            item.index = index;
+            return item;
+        },
+        handleDropdownVisible(e) {
+            this.iconTrigger = !this.iconTrigger;
+            if (this.iconTrigger) {
+                e.target.style.transform = "rotateZ(0deg)"
+            } else {
+                e.target.style.transform = "rotateZ(180deg)"
+            }
+            this.$emit('visibleItem', e)
+        },
+        querySearch(queryString, cb) {
+            var suggestionLists = this.suggestionLists;
+            var results = queryString ? suggestionLists.filter(this.createFilter(queryString)) : suggestionLists;
+            // 调用 callback 返回建议列表的数据
+            // cb(results);
+            this.loading = false;
+            if (Array.isArray(results)) {
+                self.suggestionLists = results;
+            } else {
+                console.error('autocomplete suggestions must be an array');
+            }
+        },
+        createFilter(queryString) {
+            return (restaurant) => {
+                return (restaurant.name.indexOf(queryString) === 0);
+            };
+        },
+        getData(queryString) {
+            const self = this;
+            this.loading = true;
+            this.querySearch(queryString);
+        },
+        getdata(url, para, fun) {//向后台获取数据
+            var params = para || {};
+            ajaxPost(url, params).then((res) => {
+                fun(res);
+            })
+        },
+        // 查询本品
+        handleSearchChange(newVal) {
+            const self = this;
+            this.$emit('changeSearchData', newVal.toLowerCase());
+        },
+        handleComposition(event) {
+            if (event.type === 'compositionend') {
+                this.isOnComposition = false;
+                this.handleChange(this.value);
+            } else {
+                this.isOnComposition = true;
+            }
+        },
+        handleChange(value) {
+            this.$emit('input', value);
+            if (this.isOnComposition || (!this.triggerOnFocus && !value)) {
+                this.suggestionLists = [];
+                return;
+            }
+            this.getData(value);
+        },
+        handleFocus() {
+            this.isFocus = true;
+            if (this.triggerOnFocus) {
+                this.getData(this.value);
+            }
+        },
+        handleBlur() {
+            // 因为 blur 事件处理优先于 select 事件执行
+            setTimeout(_ => {
+                this.isFocus = false;
+            }, 100);
+        },
+        handleKeyEnter() {
+            if (this.isShow && this.highlightedIndex >= 0 && this.highlightedIndex < this.suggestionLists.length) {
+                this.select(this.suggestionLists[this.highlightedIndex]);
+                this.value = "";
+            }
+        },
+        handleSuggestionSelect(item, index) {
+            this.value = "";
+            this.$emit('select', item);
+            this.highlightedIndex = index;
+        },
+        highlight(index) {
+            if (!this.isShow || this.loading) { return; }
+            if (index < 0) index = 0;
+            if (index >= this.suggestionLists.length) {
+                index = this.suggestionLists.length - 1;
+            }
+            this.highlightedIndex = index;
+        },
+    }
+}
+</script>
 <style lang="less" >
     .nodataclass {
         font-size: 12px;
@@ -314,229 +544,3 @@
         height: 18px;
     } 
 </style>
-<script>
-import { throttle, ajaxPost, containEle} from '@/util/util.js'
-
-export default {
-    name: 'dropdownitem',
-    data() {
-        let drop_name = this.dropName;
-        return {
-            dropNameText: drop_name,
-            iconTrigger: true,
-            highlightedIndex: -1,
-            suggestionLists: this.dropdownItemData,
-            isOnComposition: false,
-            isFocus: false,
-            loading: false,
-            dataFromFather: this.dropdownItemData,
-            searchName: '',
-            isClickChange: false,
-            // 切换下拉状态
-            toggleDropState: true,
-            isShowContent: false,
-            // 是否添加旋转class
-            isRotate: false
-        }
-    },
-    props: {
-        // 父级是否可以选
-        isTitleClick: {
-            type: Boolean,
-            default: true
-        },
-        showSearch: {
-            type: Boolean,
-            default: false
-        },
-        searchType: {
-            type: String,
-            default: "serial"
-        },
-        isSelect: {
-            type: Boolean,
-            default: true
-        },
-        dropName: {
-            type: String,
-            default: "不限级别"
-        },
-        menuAlign: {
-            type: String,
-            default: 'start'
-        },
-        // 上部宽高样式
-        linkStyle: {
-            type: Object,
-            default: function() {
-                return {}
-            }
-        },
-        // 下拉框宽高样式
-        groupStyle: {
-            type: Object,
-            default: function() {
-                return {}
-            }
-        },
-        dropdownItemData: {
-            type: Array,
-            default: function() {
-                return []
-            }
-        },
-        dropdownItemGroupData: {
-            type: Array,
-            default: function() {
-                return []
-            }
-        },
-        // 回显当前dropdown-item 一级和二级索引
-        highlightIndex:{
-
-        },
-        highlightIndexParent:{
-
-        }
-    },
-    watch: {
-        'searchName': throttle(function(newVal) { this.handleSearchChange(newVal) }, 500),
-        'dropdownItemData': function(newValue) {
-            this.dataFromFather = newValue;
-        },
-        'dropName':function(newValue){
-            this.dropNameText = newValue;
-        },
-        'dropdownItemGroupData':function(newVal){
-        },
-        'isShowContent'(newVal){
-            if(!newVal){
-                this.isRotate = false;
-            }
-        }
-    },
-    mounted() {
-        document.addEventListener('click',(e)=>{
-            if (!containEle(this.$el, e.target)) {
-                this.isShowContent = false;
-            }
-        })
-        document.getElementsByClassName("maste")[0].click = function() {
-            return false;
-        }
-    },
-    methods: {
-        // 选中某项后执行回调(将dropdown-item值传入)
-        handleCommand(command) {
-            this.dropNameText = command.name;
-            this.$emit("dropItemClick", command);
-            this.isShowContent = false;
-        },
-        clickSelect(e) {
-            this.isRotate = true;
-            // this.isClickChange = true;
-            this.isShowContent = !this.isShowContent;
-            console.log(this.isShowContent);
-
-            if(this.isShowContent){
-                this.$emit('triggerInput', true);
-            }
-            // e.stopPropagation();
-            return false;
-        },
-        getitem(item, index) {
-            item.index = index;
-            return item;
-        },
-        handleDropdownVisible(e) {
-            this.iconTrigger = !this.iconTrigger;
-            if (this.iconTrigger) {
-                e.target.style.transform = "rotateZ(0deg)"
-            } else {
-                e.target.style.transform = "rotateZ(180deg)"
-            }
-            this.$emit('visibleItem', e)
-        },
-        querySearch(queryString, cb) {
-            var suggestionLists = this.suggestionLists;
-            var results = queryString ? suggestionLists.filter(this.createFilter(queryString)) : suggestionLists;
-            // 调用 callback 返回建议列表的数据
-            // cb(results);
-            this.loading = false;
-            if (Array.isArray(results)) {
-                self.suggestionLists = results;
-            } else {
-                console.error('autocomplete suggestions must be an array');
-            }
-        },
-        createFilter(queryString) {
-            return (restaurant) => {
-                return (restaurant.name.indexOf(queryString) === 0);
-            };
-        },
-        getData(queryString) {
-            const self = this;
-            this.loading = true;
-            this.querySearch(queryString);
-        },
-        getdata(url, para, fun) {//向后台获取数据
-            var params = para || {};
-            ajaxPost(url, params).then((res) => {
-                fun(res);
-            })
-        },
-        // 查询本品
-        handleSearchChange(newVal) {
-            const self = this;
-            this.$emit('changeSearchData', newVal.toLowerCase());
-        },
-        handleComposition(event) {
-            if (event.type === 'compositionend') {
-                this.isOnComposition = false;
-                this.handleChange(this.value);
-            } else {
-                this.isOnComposition = true;
-            }
-        },
-        handleChange(value) {
-            this.$emit('input', value);
-            if (this.isOnComposition || (!this.triggerOnFocus && !value)) {
-                this.suggestionLists = [];
-                return;
-            }
-            this.getData(value);
-        },
-        handleFocus() {
-            this.isFocus = true;
-            if (this.triggerOnFocus) {
-                this.getData(this.value);
-            }
-        },
-        handleBlur() {
-            // 因为 blur 事件处理优先于 select 事件执行
-            setTimeout(_ => {
-                this.isFocus = false;
-            }, 100);
-        },
-        handleKeyEnter() {
-            if (this.isShow && this.highlightedIndex >= 0 && this.highlightedIndex < this.suggestionLists.length) {
-                this.select(this.suggestionLists[this.highlightedIndex]);
-                this.value = "";
-            }
-        },
-        handleSuggestionSelect(item, index) {
-            this.value = "";
-            this.$emit('select', item);
-            this.highlightedIndex = index;
-        },
-        highlight(index) {
-            if (!this.isShow || this.loading) { return; }
-            if (index < 0) index = 0;
-            if (index >= this.suggestionLists.length) {
-                index = this.suggestionLists.length - 1;
-            }
-            this.highlightedIndex = index;
-        },
-    }
-}
-</script>
